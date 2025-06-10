@@ -163,46 +163,39 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-black text-white antialiased">
-    <div class="max-w-7xl mx-auto p-6">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-white mb-2">🎤🖼️📹 Enhanced AI Assistant</h1>
-            <p class="text-gray-400">Voice • Video • Images • FaceTime-style AI Chat with Pixel Art Faces</p>
-            <div class="flex justify-center space-x-4 mt-4 text-sm text-gray-500">
-                <span>🎯 GPT-4o Realtime</span>
-                <span>📹 Real-time Vision</span>
-                <span>🎭 AI Pixel Faces</span>
-                <span>🖼️ DALL-E 3</span>
-                <span>📝 GPT-4o Transcribe</span>
-            </div>
+    <body class="min-h-screen bg-black text-white antialiased">
+        <div class="max-w-7xl mx-auto p-3">
+        <!-- Compact Header -->
+        <div class="text-center mb-4">
+            <h1 class="text-2xl font-bold text-white mb-1">🎤🖼️📹 Enhanced AI Assistant</h1>
+            <p class="text-sm text-gray-400">Voice • Video • Images • FaceTime-style AI Chat with Pixel Art Faces</p>
         </div>
 
         <!-- Main Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 h-[calc(100vh-120px)]">
             <!-- Left Panel: Controls & Status -->
-            <div class="lg:col-span-1 space-y-6">
+            <div class="lg:col-span-1 space-y-2 overflow-y-auto">
                 <!-- Connection Status -->
-                <div class="card p-4 interactive-element">
-                    <h3 class="text-sm font-medium text-white mb-3">📊 Status</h3>
-                    <div class="space-y-3">
+                <div class="card p-3 interactive-element">
+                    <h3 class="text-xs font-medium text-white mb-2">📊 Status</h3>
+                    <div class="space-y-2">
                         <div class="flex items-center justify-between">
                             <span class="text-xs text-gray-400">Connection</span>
-                            <div class="flex items-center space-x-2">
+                            <div class="flex items-center space-x-1">
                                 <div id="connectionStatusIcon" class="w-2 h-2 rounded-full bg-red-500"></div>
                                 <span id="connectionStatusText" class="text-xs text-gray-300">Disconnected</span>
                             </div>
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-xs text-gray-400">Microphone</span>
-                            <div class="flex items-center space-x-2">
+                            <div class="flex items-center space-x-1">
                                 <div id="micStatusIcon" class="w-2 h-2 rounded-full bg-gray-500"></div>
                                 <span id="micStatusText" class="text-xs text-gray-300">Inactive</span>
                             </div>
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-xs text-gray-400">AI Status</span>
-                            <div class="flex items-center space-x-2">
+                            <div class="flex items-center space-x-1">
                                 <div id="aiStatusIcon" class="w-2 h-2 rounded-full bg-gray-500"></div>
                                 <span id="aiStatusText" class="text-xs text-gray-300">Idle</span>
                             </div>
@@ -211,25 +204,25 @@
                 </div>
 
                 <!-- Controls -->
-                <div class="card p-4 interactive-element">
-                    <h3 class="text-sm font-medium text-white mb-3">🎮 Controls</h3>
-                    <div class="space-y-3">
-                        <button id="connectBtn" class="w-full px-4 py-3 btn-primary rounded-md text-sm font-semibold">
+                <div class="card p-3 interactive-element">
+                    <h3 class="text-xs font-medium text-white mb-2">🎮 Controls</h3>
+                    <div class="space-y-2">
+                        <button id="connectBtn" class="w-full px-3 py-2 btn-primary rounded-md text-xs font-semibold">
                             🚀 Connect
                         </button>
-                        <button id="micBtn" class="w-full px-4 py-3 btn-secondary rounded-md text-sm font-semibold" disabled>
+                        <button id="micBtn" class="w-full px-3 py-2 btn-secondary rounded-md text-xs font-semibold" disabled>
                             🎤 Start Voice
                         </button>
-                        <button id="clearBtn" class="w-full px-4 py-3 btn-secondary rounded-md text-sm font-semibold">
+                        <button id="clearBtn" class="w-full px-3 py-2 btn-secondary rounded-md text-xs font-semibold">
                             🧹 Clear
                         </button>
                     </div>
                 </div>
 
                 <!-- Voice Settings -->
-                <div class="card p-4 interactive-element">
-                    <h3 class="text-sm font-medium text-white mb-3">🎭 Voice Settings</h3>
-                    <div class="space-y-3">
+                <div class="card p-3 interactive-element">
+                    <h3 class="text-xs font-medium text-white mb-2">🎭 Voice Settings</h3>
+                    <div class="space-y-2">
                         <div>
                             <label class="block text-xs text-gray-400 mb-1">Voice</label>
                             <select id="aiVoice" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
@@ -268,9 +261,9 @@
                 </div>
 
                 <!-- Advanced Audio Settings -->
-                <div class="card p-4 interactive-element">
-                    <h3 class="text-sm font-medium text-white mb-3">🎤 Audio Settings</h3>
-                    <div class="space-y-3">
+                <div class="card p-3 interactive-element">
+                    <h3 class="text-xs font-medium text-white mb-2">🎤 Audio Settings</h3>
+                    <div class="space-y-2">
                         <div>
                             <label class="block text-xs text-gray-400 mb-1">VAD Threshold</label>
                             <input type="range" id="vadThreshold" min="0.1" max="0.9" step="0.1" value="0.5" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider">
@@ -315,9 +308,9 @@
                 </div>
 
                 <!-- Image Generation -->
-                <div class="card p-4 interactive-element">
-                    <h3 class="text-sm font-medium text-white mb-3">🖼️ Image Generation</h3>
-                    <div class="space-y-3">
+                <div class="card p-3 interactive-element">
+                    <h3 class="text-xs font-medium text-white mb-2">🖼️ Image Generation</h3>
+                    <div class="space-y-2">
                         <div>
                             <input type="text" id="imagePrompt" placeholder="Describe the image you want..." class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                         </div>
@@ -332,36 +325,36 @@
                                 <option value="vivid">Vivid</option>
                             </select>
                         </div>
-                        <button id="generateImageBtn" class="w-full px-4 py-3 btn-primary rounded-md text-sm font-semibold">
+                        <button id="generateImageBtn" class="w-full px-3 py-2 btn-primary rounded-md text-xs font-semibold">
                             🎨 Generate Image
                         </button>
                     </div>
                 </div>
 
                 <!-- Image Analysis -->
-                <div class="card p-4 interactive-element">
-                    <h3 class="text-sm font-medium text-white mb-3">👁️ Image Analysis</h3>
-                    <div class="space-y-3">
+                <div class="card p-3 interactive-element">
+                    <h3 class="text-xs font-medium text-white mb-2">👁️ Image Analysis</h3>
+                    <div class="space-y-2">
                         <input type="file" id="imageUpload" accept="image/*" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all duration-200">
                         <input type="text" id="analysisPrompt" placeholder="What would you like to know about the image?" value="What do you see in this image?" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                        <button id="analyzeImageBtn" class="w-full px-4 py-3 btn-secondary rounded-md text-sm font-semibold" disabled>
+                        <button id="analyzeImageBtn" class="w-full px-3 py-2 btn-secondary rounded-md text-xs font-semibold" disabled>
                             🔍 Analyze Image
                         </button>
                     </div>
                 </div>
 
                 <!-- FaceTime Video Chat -->
-                <div class="card p-4 interactive-element">
-                    <h3 class="text-sm font-medium text-white mb-3">📹 FaceTime Chat</h3>
-                    <div class="space-y-3">
-                        <button id="startVideoBtn" class="w-full px-4 py-3 btn-primary rounded-md text-sm font-semibold">
+                <div class="card p-3 interactive-element">
+                    <h3 class="text-xs font-medium text-white mb-2">📹 FaceTime Chat</h3>
+                    <div class="space-y-2">
+                        <button id="startVideoBtn" class="w-full px-3 py-2 btn-primary rounded-md text-xs font-semibold">
                             📹 Start Video Chat
                         </button>
                         <div class="grid grid-cols-2 gap-2">
-                            <button id="toggleCameraBtn" class="px-3 py-2 btn-secondary rounded-md text-sm font-semibold" disabled>
+                            <button id="toggleCameraBtn" class="px-2 py-1 btn-secondary rounded-md text-xs font-semibold" disabled>
                                 📷 Camera
                             </button>
-                            <button id="switchCameraBtn" class="px-3 py-2 btn-secondary rounded-md text-sm font-semibold" disabled>
+                            <button id="switchCameraBtn" class="px-2 py-1 btn-secondary rounded-md text-xs font-semibold" disabled>
                                 🔄 Switch
                             </button>
                         </div>
@@ -401,14 +394,14 @@
                 </div>
 
                 <!-- Audio Visualizer -->
-                <div class="card p-4 interactive-element">
-                    <h3 class="text-sm font-medium text-white mb-3">🎵 Audio Visualizer</h3>
-                    <div class="visualizer-container rounded-lg p-4">
-                        <div id="visualizer" class="flex justify-center items-end space-x-1 h-20">
+                <div class="card p-3 interactive-element">
+                    <h3 class="text-xs font-medium text-white mb-2">🎵 Audio Visualizer</h3>
+                    <div class="visualizer-container rounded-lg p-2">
+                        <div id="visualizer" class="flex justify-center items-end space-x-1 h-12">
                             <!-- Visualizer bars will be generated here -->
                         </div>
-                        <div class="text-center mt-2">
-                            <span class="text-xs text-gray-400">Real-time Audio Analysis • 24kHz PCM16</span>
+                        <div class="text-center mt-1">
+                            <span class="text-xs text-gray-400">Real-time Audio Analysis</span>
                         </div>
                     </div>
                 </div>
@@ -416,11 +409,11 @@
 
             <!-- Right Panel: Chat & Images -->
             <div class="lg:col-span-3">
-                <div class="card h-[700px] flex flex-col">
+                <div class="card h-full flex flex-col">
                     <!-- Chat Header -->
-                    <div class="p-4 border-b border-gray-800">
+                    <div class="p-3 border-b border-gray-800">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-lg font-semibold text-white">💬 Multimodal Conversation</h2>
+                            <h2 class="text-sm font-semibold text-white">💬 Multimodal Conversation</h2>
                             <div class="flex items-center space-x-3">
                                 <div id="statusDisplay" class="text-sm text-gray-400 px-3 py-1 bg-gray-800 rounded-md">🔄 Ready to connect</div>
                                 <div class="flex space-x-2">
@@ -436,16 +429,16 @@
                     </div>
 
                     <!-- Chat Messages -->
-                    <div class="flex-1 p-4">
-                        <div id="conversationView" class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+                    <div class="flex-1 p-3">
+                        <div id="conversationView" class="grid grid-cols-1 md:grid-cols-2 gap-3 h-full">
                             <!-- User Speech -->
                             <div class="flex flex-col">
-                                <div class="flex items-center space-x-2 mb-3">
+                                <div class="flex items-center space-x-2 mb-2">
                                     <div class="w-2 h-2 rounded-full bg-blue-500"></div>
-                                    <span class="text-sm font-medium text-white">👤 You</span>
+                                    <span class="text-xs font-medium text-white">👤 You</span>
                                 </div>
                                 <div id="userTranscript" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
-                                    <div class="text-gray-500 text-sm text-center mt-20">
+                                    <div class="text-gray-500 text-xs text-center mt-10">
                                         🎤 Start speaking to see your words here...
                                     </div>
                                 </div>
@@ -453,12 +446,12 @@
 
                             <!-- AI Response -->
                             <div class="flex flex-col">
-                                <div class="flex items-center space-x-2 mb-3">
+                                <div class="flex items-center space-x-2 mb-2">
                                     <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                                    <span class="text-sm font-medium text-white">🤖 AI</span>
+                                    <span class="text-xs font-medium text-white">🤖 AI</span>
                                 </div>
                                 <div id="aiTranscript" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
-                                    <div class="text-gray-500 text-sm text-center mt-20">
+                                    <div class="text-gray-500 text-xs text-center mt-10">
                                         🤖 AI responses will appear here...
                                     </div>
                                 </div>
@@ -467,16 +460,16 @@
 
                         <!-- Image Gallery View -->
                         <div id="imageView" class="h-full hidden">
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 h-full">
                                 <!-- Generated Images -->
                                 <div class="flex flex-col">
-                                    <div class="flex items-center space-x-2 mb-3">
+                                    <div class="flex items-center space-x-2 mb-2">
                                         <div class="w-2 h-2 rounded-full bg-purple-500"></div>
-                                        <span class="text-sm font-medium text-white">🎨 Generated Images</span>
+                                        <span class="text-xs font-medium text-white">🎨 Generated Images</span>
                                         <button id="clearGeneratedImages" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">Clear</button>
                                     </div>
                                     <div id="generatedImages" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
-                                        <div class="text-gray-500 text-sm text-center mt-20">
+                                        <div class="text-gray-500 text-xs text-center mt-10">
                                             🎨 Generated images will appear here...
                                         </div>
                                     </div>
@@ -484,13 +477,13 @@
 
                                 <!-- Image Analysis -->
                                 <div class="flex flex-col">
-                                    <div class="flex items-center space-x-2 mb-3">
+                                    <div class="flex items-center space-x-2 mb-2">
                                         <div class="w-2 h-2 rounded-full bg-orange-500"></div>
-                                        <span class="text-sm font-medium text-white">🔍 Image Analysis</span>
+                                        <span class="text-xs font-medium text-white">🔍 Image Analysis</span>
                                         <button id="clearAnalysis" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">Clear</button>
                                     </div>
                                     <div id="imageAnalysis" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
-                                        <div class="text-gray-500 text-sm text-center mt-20">
+                                        <div class="text-gray-500 text-xs text-center mt-10">
                                             🔍 Upload an image to see analysis here...
                                         </div>
                                     </div>
@@ -500,12 +493,12 @@
 
                         <!-- FaceTime Video View -->
                         <div id="videoView" class="h-full hidden">
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 h-full">
                                 <!-- User Camera -->
                                 <div class="flex flex-col">
-                                    <div class="flex items-center space-x-2 mb-3">
+                                    <div class="flex items-center space-x-2 mb-2">
                                         <div class="w-2 h-2 rounded-full bg-blue-500"></div>
-                                        <span class="text-sm font-medium text-white">📹 You</span>
+                                        <span class="text-xs font-medium text-white">📹 You</span>
                                         <div class="flex space-x-2 ml-auto">
                                             <span id="videoStatus" class="text-xs text-gray-500">Camera Off</span>
                                             <button id="fullscreenUserBtn" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">⛶ Full</button>
@@ -515,12 +508,12 @@
                                         <video id="userVideo" autoplay muted class="w-full h-full object-cover hidden"></video>
                                         <div id="userVideoPlaceholder" class="w-full h-full flex items-center justify-center text-gray-500">
                                             <div class="text-center">
-                                                <div class="text-6xl mb-4">📷</div>
-                                                <div class="text-sm">Click "Start Video Chat" to begin</div>
+                                                <div class="text-4xl mb-2">📷</div>
+                                                <div class="text-xs">Click "Start Video Chat" to begin</div>
                                             </div>
                                         </div>
                                         <!-- Emotion Detection Overlay -->
-                                        <div id="emotionOverlay" class="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded hidden">
+                                        <div id="emotionOverlay" class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded hidden">
                                             <span id="detectedEmotion">😐 Neutral</span>
                                         </div>
                                     </div>
@@ -528,9 +521,9 @@
 
                                 <!-- AI Pixel Face -->
                                 <div class="flex flex-col">
-                                    <div class="flex items-center space-x-2 mb-3">
+                                    <div class="flex items-center space-x-2 mb-2">
                                         <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                                        <span class="text-sm font-medium text-white">🎭 AI Assistant</span>
+                                        <span class="text-xs font-medium text-white">🎭 AI Assistant</span>
                                         <div class="flex space-x-2 ml-auto">
                                             <span id="aiFaceEmotion" class="text-xs text-gray-500">😐 Neutral</span>
                                             <button id="fullscreenAIBtn" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">⛶ Full</button>
@@ -539,12 +532,12 @@
                                     <div class="flex-1 bg-gray-900 rounded-md overflow-hidden border border-gray-700 relative flex items-center justify-center">
                                         <canvas id="aiPixelFace" class="max-w-full max-h-full" style="image-rendering: pixelated;"></canvas>
                                         <!-- Behavior Tree Debug Info -->
-                                        <div id="behaviorDebug" class="absolute top-4 left-4 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded hidden">
+                                        <div id="behaviorDebug" class="absolute top-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded hidden">
                                             <div>🧠 Behavior: <span id="currentBehavior">Idle</span></div>
                                             <div>📊 Intensity: <span id="currentIntensity">0.5</span></div>
                                         </div>
                                         <!-- Face Style Indicator -->
-                                        <div id="faceStyleIndicator" class="absolute bottom-4 right-4 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                                        <div id="faceStyleIndicator" class="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
                                             🥰 Cute Style
                                         </div>
                                     </div>
@@ -552,18 +545,18 @@
                             </div>
                             
                             <!-- Video Chat Controls -->
-                            <div class="mt-4 p-3 bg-gray-900 rounded-lg border border-gray-700">
+                            <div class="mt-2 p-2 bg-gray-900 rounded-lg border border-gray-700">
                                 <div class="flex items-center justify-between">
-                                    <div class="flex space-x-4 text-sm text-gray-400">
-                                        <span>📊 Frames analyzed: <span id="framesAnalyzed">0</span></span>
-                                        <span>🎭 Expressions shown: <span id="expressionsShown">0</span></span>
-                                        <span>⏱️ Session time: <span id="sessionTime">00:00</span></span>
+                                    <div class="flex space-x-3 text-xs text-gray-400">
+                                        <span>📊 Frames: <span id="framesAnalyzed">0</span></span>
+                                        <span>🎭 Expressions: <span id="expressionsShown">0</span></span>
+                                        <span>⏱️ Time: <span id="sessionTime">00:00</span></span>
                                     </div>
                                     <div class="flex space-x-2">
-                                        <button id="debugModeBtn" class="text-xs text-gray-500 hover:text-gray-300 px-3 py-1 bg-gray-800 rounded transition-colors duration-200">
+                                        <button id="debugModeBtn" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">
                                             🐛 Debug
                                         </button>
-                                        <button id="recordSessionBtn" class="text-xs text-gray-500 hover:text-gray-300 px-3 py-1 bg-gray-800 rounded transition-colors duration-200">
+                                        <button id="recordSessionBtn" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">
                                             🔴 Record
                                         </button>
                                     </div>
@@ -574,12 +567,12 @@
 
                     <!-- Enhanced Debug Logs -->
                     <div class="border-t border-gray-800">
-                        <div class="p-4">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-medium text-white">🔍 Debug Logs</span>
+                        <div class="p-2">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-medium text-white">🔍 Debug Logs</span>
                                 <button onclick="clearLogs()" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">🗑️ Clear</button>
                             </div>
-                            <div id="debugLogs" class="h-32 p-3 bg-gray-950 rounded text-xs debug-logs overflow-y-auto scrollbar-thin border border-gray-700">
+                            <div id="debugLogs" class="h-20 p-2 bg-gray-950 rounded text-xs debug-logs overflow-y-auto scrollbar-thin border border-gray-700">
                                 <div class="text-blue-400">🔄 Ready to connect...</div>
                             </div>
                         </div>
@@ -593,12 +586,12 @@
         // Initialize visualizer bars
         function initializeVisualizer() {
             const visualizer = document.getElementById('visualizer');
-            const numBars = 20;
+            const numBars = 15;
             
             for (let i = 0; i < numBars; i++) {
                 const bar = document.createElement('div');
                 bar.className = 'visualizer-bar w-1 bg-gradient-to-t from-blue-500 to-purple-500 rounded-sm';
-                bar.style.height = '4px';
+                bar.style.height = '2px';
                 visualizer.appendChild(bar);
             }
         }
@@ -610,7 +603,7 @@
             
             bars.forEach((bar, index) => {
                 const dataIndex = Math.floor((index / bars.length) * audioData.length);
-                const height = Math.max(4, (audioData[dataIndex] / 255) * 60);
+                const height = Math.max(2, (audioData[dataIndex] / 255) * 40);
                 bar.style.height = `${height}px`;
             });
         }
