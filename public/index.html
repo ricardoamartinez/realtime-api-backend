@@ -89,22 +89,13 @@
             @apply bg-gray-900 border border-gray-800 rounded-lg;
         }
         
-        .scrollbar-thin::-webkit-scrollbar {
-            width: 6px;
+        .scrollbar-hide {
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+            scrollbar-width: none;  /* Firefox */
         }
         
-        .scrollbar-thin::-webkit-scrollbar-track {
-            background: #1f2937;
-            border-radius: 3px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-            background: #4b5563;
-            border-radius: 3px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-            background: #6b7280;
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;  /* Safari and Chrome */
         }
         
         .debug-logs {
@@ -174,7 +165,7 @@
         <!-- Main Content -->
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 h-[calc(100vh-120px)]">
             <!-- Left Panel: Controls & Status -->
-            <div class="lg:col-span-1 space-y-2 overflow-y-auto">
+            <div class="lg:col-span-1 space-y-2 overflow-y-auto scrollbar-hide">
                 <!-- Connection Status -->
                 <div class="card p-3 interactive-element">
                     <h3 class="text-xs font-medium text-white mb-2">📊 Status</h3>
@@ -437,7 +428,7 @@
                                     <div class="w-2 h-2 rounded-full bg-blue-500"></div>
                                     <span class="text-xs font-medium text-white">👤 You</span>
                                 </div>
-                                <div id="userTranscript" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
+                                <div id="userTranscript" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-hide">
                                     <div class="text-gray-500 text-xs text-center mt-10">
                                         🎤 Start speaking to see your words here...
                                     </div>
@@ -450,7 +441,7 @@
                                     <div class="w-2 h-2 rounded-full bg-green-500"></div>
                                     <span class="text-xs font-medium text-white">🤖 AI</span>
                                 </div>
-                                <div id="aiTranscript" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
+                                <div id="aiTranscript" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-hide">
                                     <div class="text-gray-500 text-xs text-center mt-10">
                                         🤖 AI responses will appear here...
                                     </div>
@@ -468,7 +459,7 @@
                                         <span class="text-xs font-medium text-white">🎨 Generated Images</span>
                                         <button id="clearGeneratedImages" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">Clear</button>
                                     </div>
-                                    <div id="generatedImages" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
+                                    <div id="generatedImages" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-hide">
                                         <div class="text-gray-500 text-xs text-center mt-10">
                                             🎨 Generated images will appear here...
                                         </div>
@@ -482,7 +473,7 @@
                                         <span class="text-xs font-medium text-white">🔍 Image Analysis</span>
                                         <button id="clearAnalysis" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">Clear</button>
                                     </div>
-                                    <div id="imageAnalysis" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
+                                    <div id="imageAnalysis" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-hide">
                                         <div class="text-gray-500 text-xs text-center mt-10">
                                             🔍 Upload an image to see analysis here...
                                         </div>
@@ -572,7 +563,7 @@
                                 <span class="text-xs font-medium text-white">🔍 Debug Logs</span>
                                 <button onclick="clearLogs()" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">🗑️ Clear</button>
                             </div>
-                            <div id="debugLogs" class="h-20 p-2 bg-gray-950 rounded text-xs debug-logs overflow-y-auto scrollbar-thin border border-gray-700">
+                            <div id="debugLogs" class="h-20 p-2 bg-gray-950 rounded text-xs debug-logs overflow-y-auto scrollbar-hide border border-gray-700">
                                 <div class="text-blue-400">🔄 Ready to connect...</div>
                             </div>
                         </div>
