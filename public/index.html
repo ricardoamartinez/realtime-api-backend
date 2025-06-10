@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Voice Assistant</title>
+    <title>🎤🖼️ Enhanced AI Assistant - Voice & Vision</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -120,14 +120,61 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
+
+        /* Enhanced slider styling */
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            background: #374151;
+            outline: none;
+            border-radius: 8px;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            cursor: pointer;
+            border: 2px solid #1f2937;
+            transition: all 0.2s ease;
+        }
+        
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            cursor: pointer;
+            border: 2px solid #1f2937;
+            transition: all 0.2s ease;
+        }
+        
+        .slider::-moz-range-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
     </style>
 </head>
 <body class="min-h-screen bg-black text-white antialiased">
     <div class="max-w-7xl mx-auto p-6">
         <!-- Header -->
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-white mb-2">🎤 AI Voice Assistant</h1>
-            <p class="text-gray-400">Enhanced GPT-4o Realtime API • Studio Quality Audio • Real-time Transcription</p>
+            <h1 class="text-4xl font-bold text-white mb-2">🎤🖼️ Enhanced AI Assistant</h1>
+            <p class="text-gray-400">Voice Conversation • Image Generation & Analysis • Advanced Transcription • Multimodal AI</p>
+            <div class="flex justify-center space-x-4 mt-4 text-sm text-gray-500">
+                <span>🎯 GPT-4o Realtime</span>
+                <span>🖼️ DALL-E 3</span>
+                <span>📝 GPT-4o Transcribe</span>
+                <span>🎵 WebRTC</span>
+            </div>
         </div>
 
         <!-- Main Content -->
@@ -178,30 +225,75 @@
                     </div>
                 </div>
 
-                <!-- Settings -->
+                <!-- Voice Settings -->
                 <div class="card p-4 interactive-element">
-                    <h3 class="text-sm font-medium text-white mb-3">⚙️ Settings</h3>
+                    <h3 class="text-sm font-medium text-white mb-3">🎭 Voice Settings</h3>
                     <div class="space-y-3">
                         <div>
-                            <label class="block text-xs text-gray-400 mb-1">🎭 Voice</label>
+                            <label class="block text-xs text-gray-400 mb-1">Voice</label>
                             <select id="aiVoice" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                                 <option value="alloy">🎪 Alloy - Balanced & Professional</option>
                                 <option value="ash">🌋 Ash - Rich & Warm</option>
                                 <option value="ballad">🎵 Ballad - Melodic & Smooth</option>
                                 <option value="coral">🐚 Coral - Bright & Cheerful</option>
                                 <option value="echo">📢 Echo - Deep & Resonant</option>
+                                <option value="fable">📚 Fable - Storytelling</option>
+                                <option value="onyx">⚫ Onyx - Deep & Authoritative</option>
+                                <option value="nova">⭐ Nova - Young & Energetic</option>
                                 <option value="sage">🧙‍♂️ Sage - Calm & Wise</option>
                                 <option value="shimmer">✨ Shimmer - Sparkling & Clear</option>
-                                <option value="verse" selected>🎭 Verse - Most Human-like (Latest)</option>
+                                <option value="verse" selected>🎭 Verse - Most Human-like</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs text-gray-400 mb-1">⚡ VAD Eagerness</label>
-                            <select id="vadEagerness" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                                <option value="low">🐌 Low - Patient (Large chunks)</option>
-                                <option value="medium">⚖️ Medium - Balanced</option>
-                                <option value="high">⚡ High - Responsive (Fast chunks)</option>
-                                <option value="auto" selected>🤖 Auto - AI Adaptive (Latest)</option>
+                            <label class="block text-xs text-gray-400 mb-1">Speech Speed</label>
+                            <input type="range" id="speechSpeed" min="0.25" max="1.5" step="0.1" value="1.0" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>0.25x</span>
+                                <span id="speedValue">1.0x</span>
+                                <span>1.5x</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Temperature</label>
+                            <input type="range" id="temperature" min="0.6" max="1.2" step="0.1" value="0.8" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>0.6</span>
+                                <span id="tempValue">0.8</span>
+                                <span>1.2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Audio Settings -->
+                <div class="card p-4 interactive-element">
+                    <h3 class="text-sm font-medium text-white mb-3">🎤 Audio Settings</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">VAD Threshold</label>
+                            <input type="range" id="vadThreshold" min="0.1" max="0.9" step="0.1" value="0.5" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>Sensitive</span>
+                                <span id="vadValue">0.5</span>
+                                <span>Conservative</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Silence Duration (ms)</label>
+                            <input type="range" id="silenceDuration" min="100" max="1000" step="50" value="200" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>100ms</span>
+                                <span id="silenceValue">200ms</span>
+                                <span>1000ms</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Transcription Model</label>
+                            <select id="transcriptionModel" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                <option value="gpt-4o-transcribe" selected>🎯 GPT-4o Transcribe (Latest)</option>
+                                <option value="gpt-4o-mini-transcribe">⚡ GPT-4o Mini Transcribe</option>
+                                <option value="whisper-1">🔄 Whisper-1 (Classic)</option>
                             </select>
                         </div>
                         <div class="space-y-2">
@@ -211,13 +303,49 @@
                             </div>
                             <div class="flex items-center space-x-2">
                                 <input type="checkbox" id="noiseReduction" checked class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 transition-all duration-200">
-                                <label for="noiseReduction" class="text-xs text-gray-400">🔇 Noise reduction (Latest)</label>
+                                <label for="noiseReduction" class="text-xs text-gray-400">🔇 Noise reduction</label>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <input type="checkbox" id="includeLogprobs" checked class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 transition-all duration-200">
-                                <label for="includeLogprobs" class="text-xs text-gray-400">📊 Confidence scores (Latest)</label>
+                                <label for="includeLogprobs" class="text-xs text-gray-400">📊 Confidence scores</label>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Image Generation -->
+                <div class="card p-4 interactive-element">
+                    <h3 class="text-sm font-medium text-white mb-3">🖼️ Image Generation</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <input type="text" id="imagePrompt" placeholder="Describe the image you want..." class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="imageSize" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                <option value="1024x1024" selected>Square</option>
+                                <option value="1024x1792">Portrait</option>
+                                <option value="1792x1024">Landscape</option>
+                            </select>
+                            <select id="imageStyle" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                <option value="natural" selected>Natural</option>
+                                <option value="vivid">Vivid</option>
+                            </select>
+                        </div>
+                        <button id="generateImageBtn" class="w-full px-4 py-3 btn-primary rounded-md text-sm font-semibold">
+                            🎨 Generate Image
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Image Analysis -->
+                <div class="card p-4 interactive-element">
+                    <h3 class="text-sm font-medium text-white mb-3">👁️ Image Analysis</h3>
+                    <div class="space-y-3">
+                        <input type="file" id="imageUpload" accept="image/*" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all duration-200">
+                        <input type="text" id="analysisPrompt" placeholder="What would you like to know about the image?" value="What do you see in this image?" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                        <button id="analyzeImageBtn" class="w-full px-4 py-3 btn-secondary rounded-md text-sm font-semibold" disabled>
+                            🔍 Analyze Image
+                        </button>
                     </div>
                 </div>
 
@@ -235,20 +363,25 @@
                 </div>
             </div>
 
-            <!-- Right Panel: Chat -->
+            <!-- Right Panel: Chat & Images -->
             <div class="lg:col-span-3">
                 <div class="card h-[700px] flex flex-col">
                     <!-- Chat Header -->
                     <div class="p-4 border-b border-gray-800">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-lg font-semibold text-white">💬 Conversation</h2>
-                            <div id="statusDisplay" class="text-sm text-gray-400 px-3 py-1 bg-gray-800 rounded-md">🔄 Ready to connect</div>
+                            <h2 class="text-lg font-semibold text-white">💬 Multimodal Conversation</h2>
+                            <div class="flex items-center space-x-3">
+                                <div id="statusDisplay" class="text-sm text-gray-400 px-3 py-1 bg-gray-800 rounded-md">🔄 Ready to connect</div>
+                                <button id="toggleImageMode" class="text-sm px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors duration-200">
+                                    🖼️ Images
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Chat Messages -->
                     <div class="flex-1 p-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+                        <div id="conversationView" class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
                             <!-- User Speech -->
                             <div class="flex flex-col">
                                 <div class="flex items-center space-x-2 mb-3">
@@ -271,6 +404,39 @@
                                 <div id="aiTranscript" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
                                     <div class="text-gray-500 text-sm text-center mt-20">
                                         🤖 AI responses will appear here...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image Gallery View -->
+                        <div id="imageView" class="h-full hidden">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
+                                <!-- Generated Images -->
+                                <div class="flex flex-col">
+                                    <div class="flex items-center space-x-2 mb-3">
+                                        <div class="w-2 h-2 rounded-full bg-purple-500"></div>
+                                        <span class="text-sm font-medium text-white">🎨 Generated Images</span>
+                                        <button id="clearGeneratedImages" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">Clear</button>
+                                    </div>
+                                    <div id="generatedImages" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
+                                        <div class="text-gray-500 text-sm text-center mt-20">
+                                            🎨 Generated images will appear here...
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Image Analysis -->
+                                <div class="flex flex-col">
+                                    <div class="flex items-center space-x-2 mb-3">
+                                        <div class="w-2 h-2 rounded-full bg-orange-500"></div>
+                                        <span class="text-sm font-medium text-white">🔍 Image Analysis</span>
+                                        <button id="clearAnalysis" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">Clear</button>
+                                    </div>
+                                    <div id="imageAnalysis" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
+                                        <div class="text-gray-500 text-sm text-center mt-20">
+                                            🔍 Upload an image to see analysis here...
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -320,17 +486,209 @@
             });
         }
 
-        // Settings update function
+        // Enhanced settings update function
         function updateSettings() {
             if (window.realtimeClient && window.realtimeClient.updateSettings) {
                 const settings = {
                     voice: document.getElementById('aiVoice').value,
-                    vadEagerness: document.getElementById('vadEagerness').value,
+                    speed: parseFloat(document.getElementById('speechSpeed').value),
+                    temperature: parseFloat(document.getElementById('temperature').value),
+                    vadThreshold: parseFloat(document.getElementById('vadThreshold').value),
+                    silenceDuration: parseInt(document.getElementById('silenceDuration').value),
+                    transcriptionModel: document.getElementById('transcriptionModel').value,
                     interruptResponse: document.getElementById('interruptResponse').checked,
                     noiseReduction: document.getElementById('noiseReduction').checked,
                     includeLogprobs: document.getElementById('includeLogprobs').checked
                 };
                 window.realtimeClient.updateSettings(settings);
+            }
+        }
+
+        // Image generation function
+        async function generateImage() {
+            const prompt = document.getElementById('imagePrompt').value.trim();
+            if (!prompt) {
+                alert('Please enter an image description');
+                return;
+            }
+
+            const generateBtn = document.getElementById('generateImageBtn');
+            const originalText = generateBtn.textContent;
+            generateBtn.disabled = true;
+            generateBtn.textContent = '🎨 Generating...';
+
+            try {
+                const response = await fetch('/generate-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt,
+                        size: document.getElementById('imageSize').value,
+                        style: document.getElementById('imageStyle').value
+                    })
+                });
+
+                const data = await response.json();
+                if (data.data && data.data[0]) {
+                    displayGeneratedImage(data.data[0], prompt);
+                    // Auto-switch to image view
+                    showImageView();
+                } else {
+                    throw new Error('No image data received');
+                }
+            } catch (error) {
+                console.error('Image generation failed:', error);
+                alert('Image generation failed: ' + error.message);
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = originalText;
+            }
+        }
+
+        // Image analysis function
+        async function analyzeImage() {
+            const fileInput = document.getElementById('imageUpload');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select an image file');
+                return;
+            }
+
+            const analyzeBtn = document.getElementById('analyzeImageBtn');
+            const originalText = analyzeBtn.textContent;
+            analyzeBtn.disabled = true;
+            analyzeBtn.textContent = '🔍 Analyzing...';
+
+            try {
+                const formData = new FormData();
+                formData.append('image', file);
+                formData.append('prompt', document.getElementById('analysisPrompt').value);
+
+                const response = await fetch('/analyze-image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.choices && data.choices[0]) {
+                    displayImageAnalysis(file, data.choices[0].message.content);
+                    // Auto-switch to image view
+                    showImageView();
+                } else {
+                    throw new Error('No analysis data received');
+                }
+            } catch (error) {
+                console.error('Image analysis failed:', error);
+                alert('Image analysis failed: ' + error.message);
+            } finally {
+                analyzeBtn.disabled = false;
+                analyzeBtn.textContent = originalText;
+            }
+        }
+
+        // Display generated image
+        function displayGeneratedImage(imageData, prompt) {
+            const container = document.getElementById('generatedImages');
+            if (container.querySelector('.text-gray-500')) {
+                container.innerHTML = '';
+            }
+
+            const imageDiv = document.createElement('div');
+            imageDiv.className = 'mb-4 p-3 bg-gray-900 rounded-lg border border-gray-700';
+            imageDiv.innerHTML = `
+                <div class="mb-2">
+                    <span class="text-xs text-gray-400">${new Date().toLocaleTimeString()}</span>
+                    <p class="text-sm text-white mt-1">"${prompt}"</p>
+                </div>
+                <img src="data:image/png;base64,${imageData.b64_json}" alt="${prompt}" class="w-full rounded-lg">
+                <div class="mt-2 flex justify-between items-center">
+                    <span class="text-xs text-gray-500">${document.getElementById('imageSize').value} • ${document.getElementById('imageStyle').value}</span>
+                    <button onclick="downloadImage('${imageData.b64_json}', '${prompt.replace(/[^a-zA-Z0-9]/g, '_')}')" class="text-xs text-blue-400 hover:text-blue-300">Download</button>
+                </div>
+            `;
+            container.appendChild(imageDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Display image analysis
+        function displayImageAnalysis(file, analysis) {
+            const container = document.getElementById('imageAnalysis');
+            if (container.querySelector('.text-gray-500')) {
+                container.innerHTML = '';
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const analysisDiv = document.createElement('div');
+                analysisDiv.className = 'mb-4 p-3 bg-gray-900 rounded-lg border border-gray-700';
+                analysisDiv.innerHTML = `
+                    <div class="mb-2">
+                        <span class="text-xs text-gray-400">${new Date().toLocaleTimeString()}</span>
+                        <span class="text-xs text-gray-500 ml-2">${file.name}</span>
+                    </div>
+                    <img src="${e.target.result}" alt="Uploaded image" class="w-full rounded-lg mb-3 max-h-48 object-contain">
+                    <div class="text-sm text-white whitespace-pre-wrap">${analysis}</div>
+                `;
+                container.appendChild(analysisDiv);
+                container.scrollTop = container.scrollHeight;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Download image function
+        function downloadImage(base64Data, filename) {
+            const link = document.createElement('a');
+            link.href = `data:image/png;base64,${base64Data}`;
+            link.download = `${filename}.png`;
+            link.click();
+        }
+
+        // Toggle between conversation and image views
+        function toggleImageMode() {
+            const conversationView = document.getElementById('conversationView');
+            const imageView = document.getElementById('imageView');
+            const toggleBtn = document.getElementById('toggleImageMode');
+
+            if (imageView.classList.contains('hidden')) {
+                showImageView();
+            } else {
+                showConversationView();
+            }
+        }
+
+        function showImageView() {
+            document.getElementById('conversationView').classList.add('hidden');
+            document.getElementById('imageView').classList.remove('hidden');
+            document.getElementById('toggleImageMode').textContent = '💬 Chat';
+        }
+
+        function showConversationView() {
+            document.getElementById('imageView').classList.add('hidden');
+            document.getElementById('conversationView').classList.remove('hidden');
+            document.getElementById('toggleImageMode').textContent = '🖼️ Images';
+        }
+
+        // Clear functions
+        function clearGeneratedImages() {
+            const container = document.getElementById('generatedImages');
+            container.innerHTML = '<div class="text-gray-500 text-sm text-center mt-20">🎨 Generated images will appear here...</div>';
+        }
+
+        function clearImageAnalysis() {
+            const container = document.getElementById('imageAnalysis');
+            container.innerHTML = '<div class="text-gray-500 text-sm text-center mt-20">🔍 Upload an image to see analysis here...</div>';
+        }
+
+        // Update slider value displays
+        function updateSliderDisplay(sliderId, displayId, suffix = '') {
+            const slider = document.getElementById(sliderId);
+            const display = document.getElementById(displayId);
+            if (slider && display) {
+                display.textContent = slider.value + suffix;
+                slider.addEventListener('input', function() {
+                    display.textContent = this.value + suffix;
+                    updateSettings();
+                });
             }
         }
 
@@ -346,13 +704,53 @@
         document.addEventListener('DOMContentLoaded', function() {
             initializeVisualizer();
             
-            // Add event listeners for settings
-            ['aiVoice', 'vadEagerness', 'interruptResponse', 'noiseReduction', 'includeLogprobs'].forEach(id => {
+            // Initialize slider displays
+            updateSliderDisplay('speechSpeed', 'speedValue', 'x');
+            updateSliderDisplay('temperature', 'tempValue');
+            updateSliderDisplay('vadThreshold', 'vadValue');
+            updateSliderDisplay('silenceDuration', 'silenceValue', 'ms');
+            
+            // Add event listeners for all settings
+            ['aiVoice', 'transcriptionModel', 'interruptResponse', 'noiseReduction', 'includeLogprobs'].forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
                     element.addEventListener('change', updateSettings);
                 }
             });
+            
+            // Add event listeners for image functionality
+            const generateImageBtn = document.getElementById('generateImageBtn');
+            const analyzeImageBtn = document.getElementById('analyzeImageBtn');
+            const imageUpload = document.getElementById('imageUpload');
+            const toggleImageModeBtn = document.getElementById('toggleImageMode');
+            const clearGeneratedImagesBtn = document.getElementById('clearGeneratedImages');
+            const clearAnalysisBtn = document.getElementById('clearAnalysis');
+            
+            if (generateImageBtn) generateImageBtn.addEventListener('click', generateImage);
+            if (analyzeImageBtn) analyzeImageBtn.addEventListener('click', analyzeImage);
+            if (toggleImageModeBtn) toggleImageModeBtn.addEventListener('click', toggleImageMode);
+            if (clearGeneratedImagesBtn) clearGeneratedImagesBtn.addEventListener('click', clearGeneratedImages);
+            if (clearAnalysisBtn) clearAnalysisBtn.addEventListener('click', clearImageAnalysis);
+            
+            // Enable analyze button when image is selected
+            if (imageUpload) {
+                imageUpload.addEventListener('change', function() {
+                    if (analyzeImageBtn) {
+                        analyzeImageBtn.disabled = !this.files[0];
+                    }
+                });
+            }
+            
+            // Allow Enter key for image generation
+            const imagePrompt = document.getElementById('imagePrompt');
+            if (imagePrompt) {
+                imagePrompt.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        generateImage();
+                    }
+                });
+            }
         });
 
         // Expose functions globally for the client

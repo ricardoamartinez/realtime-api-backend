@@ -1,7 +1,7 @@
 {
   "name": "realtime-api-backend",
-  "version": "1.0.0",
-  "description": "Realtime API backend with voice input/output and transcription",
+  "version": "2.0.0",
+  "description": "Enhanced Realtime API backend with voice conversation, image generation/analysis, and advanced transcription capabilities",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
