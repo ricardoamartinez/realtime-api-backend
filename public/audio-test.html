@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .test-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🔊 Audio System Test</h1>
+    
+    <div class="test-box">
+        <h3>1. Test Audio Playback</h3>
+        <p>Click to play a test tone:</p>
+        <button onclick="testAudioPlayback()">Play Test Tone</button>
+        <div id="playbackResult" class="result"></div>
+    </div>
+
+    <div class="test-box">
+        <h3>2. Test Microphone Access</h3>
+        <p>Click to test microphone:</p>
+        <button onclick="testMicrophone()">Test Microphone</button>
+        <div id="micResult" class="result"></div>
+    </div>
+
+    <div class="test-box">
+        <h3>3. Test WebSocket Connection</h3>
+        <p>Click to test server connection:</p>
+        <button onclick="testWebSocket()">Test Connection</button>
+        <div id="wsResult" class="result"></div>
+    </div>
+
+    <div class="test-box">
+        <h3>4. Browser Info</h3>
+        <div id="browserInfo"></div>
+    </div>
+
+    <script>
+        // Display browser info
+        document.getElementById('browserInfo').innerHTML = `
+            <strong>Browser:</strong> ${navigator.userAgent}<br>
+            <strong>Audio Context Support:</strong> ${window.AudioContext ? 'Yes' : 'No'}<br>
+            <strong>WebRTC Support:</strong> ${navigator.mediaDevices ? 'Yes' : 'No'}<br>
+            <strong>WebSocket Support:</strong> ${window.WebSocket ? 'Yes' : 'No'}
+        `;
+
+        function testAudioPlayback() {
+            const result = document.getElementById('playbackResult');
+            result.innerHTML = 'Testing...';
+            
+            try {
+                const audioContext = new AudioContext();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.5);
+                
+                result.innerHTML = '✅ Audio playback working! Did you hear a beep?';
+                result.className = 'result success';
+            } catch (error) {
+                result.innerHTML = `❌ Audio playback failed: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+
+        async function testMicrophone() {
+            const result = document.getElementById('micResult');
+            result.innerHTML = 'Testing...';
+            
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                result.innerHTML = '✅ Microphone access granted!';
+                result.className = 'result success';
+                
+                // Stop the stream
+                stream.getTracks().forEach(track => track.stop());
+            } catch (error) {
+                result.innerHTML = `❌ Microphone failed: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+
+        function testWebSocket() {
+            const result = document.getElementById('wsResult');
+            result.innerHTML = 'Testing...';
+            
+            try {
+                const ws = new WebSocket('ws://localhost:8080');
+                
+                ws.onopen = () => {
+                    result.innerHTML = '✅ WebSocket connection successful!';
+                    result.className = 'result success';
+                    ws.close();
+                };
+                
+                ws.onerror = (error) => {
+                    result.innerHTML = `❌ WebSocket failed: Connection error`;
+                    result.className = 'result error';
+                };
+                
+                ws.onclose = () => {
+                    if (result.innerHTML.includes('Testing...')) {
+                        result.innerHTML = '❌ WebSocket failed: Connection closed immediately';
+                        result.className = 'result error';
+                    }
+                };
+            } catch (error) {
+                result.innerHTML = `❌ WebSocket failed: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+    </script>
+</body>
+</html> 
