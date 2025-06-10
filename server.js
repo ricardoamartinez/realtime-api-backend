@@ -28,22 +28,21 @@ app.post('/session', async (req, res) => {
         instructions: 'You are a highly intelligent, warm, and naturally conversational AI assistant. Speak like a real person would - use natural speech patterns, occasional filler words like "um" or "you know", and vary your tone and pace to sound genuinely human. Be engaging, empathetic, and personable. Feel free to express enthusiasm, curiosity, or gentle humor when appropriate. Respond as if you\'re having a natural conversation with a friend. Use contractions, informal language, and let your personality shine through. If you need to think for a moment, it\'s perfectly natural to say "hmm" or "let me think about that." Make the conversation feel alive and authentic.',
         modalities: ['text', 'audio'],
         turn_detection: {
-          type: 'semantic_vad', // Latest semantic VAD for better speech detection
-          eagerness: 'auto', // Auto adjusts based on context
+          type: 'server_vad', // Use server VAD for more reliable detection
+          threshold: 0.5,
+          prefix_padding_ms: 300,
+          silence_duration_ms: 200,
           create_response: true,
           interrupt_response: true
         },
         input_audio_transcription: {
-          model: 'gpt-4o-transcribe', // Latest transcription model
-          prompt: 'This is a natural conversation with clear speech. Expect natural speech patterns and conversational language.',
+          model: 'whisper-1', // Use whisper-1 for more reliable transcription
+          prompt: 'This is a clear conversation in English with natural speech patterns.',
           language: 'en'
         },
         input_audio_noise_reduction: {
           type: 'near_field' // Latest noise reduction feature
         },
-        include: [
-          'item.input_audio_transcription.logprobs' // Include confidence scores
-        ],
         temperature: 0.8,
         max_response_output_tokens: 4096
       }),
@@ -72,10 +71,9 @@ app.listen(PORT, () => {
   console.log('🔧 Using OpenAI Realtime API with latest features:');
   console.log('   📱 Model: gpt-4o-realtime-preview-2025-06-03');
   console.log('   🎭 Voice: verse (latest)');
-  console.log('   🧠 VAD: semantic_vad with auto eagerness');
-  console.log('   🎤 Transcription: gpt-4o-transcribe');
+  console.log('   🧠 VAD: server_vad with threshold 0.5');
+  console.log('   🎤 Transcription: whisper-1');
   console.log('   🔇 Noise Reduction: near_field');
-  console.log('   📊 LogProbs: enabled');
   
   if (!process.env.OPENAI_API_KEY) {
     console.log('⚠️  WARNING: OPENAI_API_KEY environment variable is not set!');
