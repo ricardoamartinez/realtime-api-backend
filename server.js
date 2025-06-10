@@ -54,6 +54,53 @@ app.post('/session', async (req, res) => {
       tools = []
     } = req.body;
 
+    // Enhanced tools for AI face expression control
+    const enhancedTools = [
+      {
+        type: 'function',
+        name: 'update_ai_expression',
+        description: 'Update the AI agent\'s pixel art face expression based on the conversation context and user\'s emotional state',
+        parameters: {
+          type: 'object',
+          properties: {
+            emotion: {
+              type: 'string',
+              enum: ['happy', 'sad', 'excited', 'thinking', 'confused', 'surprised', 'laughing', 'neutral', 'listening', 'speaking'],
+              description: 'The primary emotion to display'
+            },
+            intensity: {
+              type: 'number',
+              minimum: 0,
+              maximum: 1,
+              description: 'Intensity of the emotion (0.0 to 1.0)'
+            },
+            context: {
+              type: 'string',
+              description: 'Context of the current conversation or situation'
+            }
+          },
+          required: ['emotion']
+        }
+      },
+      {
+        type: 'function',
+        name: 'analyze_user_emotion',
+        description: 'Request analysis of the user\'s current emotional state based on their video feed',
+        parameters: {
+          type: 'object',
+          properties: {
+            focus: {
+              type: 'string',
+              enum: ['facial_expression', 'body_language', 'overall_mood', 'engagement_level'],
+              description: 'Aspect of user emotion to focus analysis on'
+            }
+          },
+          required: ['focus']
+        }
+      },
+      ...tools
+    ];
+
     const sessionConfig = {
       model,
       voice,
@@ -67,7 +114,7 @@ app.post('/session', async (req, res) => {
       output_audio_format: 'pcm16',
       input_audio_transcription,
       input_audio_noise_reduction,
-      tools,
+      tools: enhancedTools,
       tool_choice: 'auto',
       tracing: 'auto'
     };
@@ -314,15 +361,209 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
   }
 });
 
+// Endpoint for real-time video frame analysis
+app.post('/analyze-video-frame', async (req, res) => {
+  try {
+    const { frame, prompt = 'Analyze this video frame and describe what you see, focusing on the person\'s emotions, expressions, and overall mood.' } = req.body;
+    
+    if (!frame) {
+      return res.status(400).json({ error: 'Video frame data is required' });
+    }
+
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: prompt },
+              {
+                type: 'image_url',
+                image_url: {
+                  url: frame,
+                  detail: 'low' // Use low detail for real-time processing
+                }
+              }
+            ]
+          }
+        ],
+        max_tokens: 500,
+        temperature: 0.3 // Lower temperature for consistent analysis
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('❌ Video frame analysis error:', response.status, errorData);
+      throw new Error(`Video frame analysis error: ${response.status} - ${errorData}`);
+    }
+
+    const data = await response.json();
+    console.log('✅ Video frame analyzed successfully');
+    res.json(data);
+  } catch (error) {
+    console.error('❌ Error analyzing video frame:', error);
+    res.status(500).json({ 
+      error: 'Failed to analyze video frame',
+      details: error.message 
+    });
+  }
+});
+
+// Endpoint for AI face expression control
+app.post('/update-ai-face', async (req, res) => {
+  try {
+    const { 
+      emotion = 'neutral',
+      intensity = 0.5,
+      context = '',
+      userEmotion = 'unknown'
+    } = req.body;
+
+    // Simulate behavior tree decision making
+    const faceData = generateAIFaceExpression(emotion, intensity, context, userEmotion);
+    
+    console.log(`✅ AI face updated: ${emotion} (intensity: ${intensity})`);
+    res.json({
+      success: true,
+      faceData,
+      emotion,
+      intensity,
+      timestamp: Date.now()
+    });
+  } catch (error) {
+    console.error('❌ Error updating AI face:', error);
+    res.status(500).json({ 
+      error: 'Failed to update AI face',
+      details: error.message 
+    });
+  }
+});
+
+// Function to generate AI face expression based on behavior tree logic
+function generateAIFaceExpression(emotion, intensity, context, userEmotion) {
+  const emotions = {
+    happy: {
+      eyes: 'sparkle',
+      mouth: 'smile',
+      cheeks: 'rosy',
+      eyebrows: 'raised',
+      animation: 'bounce'
+    },
+    sad: {
+      eyes: 'droopy',
+      mouth: 'frown',
+      cheeks: 'pale',
+      eyebrows: 'lowered',
+      animation: 'droop'
+    },
+    excited: {
+      eyes: 'wide',
+      mouth: 'grin',
+      cheeks: 'flushed',
+      eyebrows: 'high',
+      animation: 'wiggle'
+    },
+    thinking: {
+      eyes: 'focused',
+      mouth: 'contemplative',
+      cheeks: 'normal',
+      eyebrows: 'furrowed',
+      animation: 'thoughtful'
+    },
+    confused: {
+      eyes: 'squinted',
+      mouth: 'puzzled',
+      cheeks: 'normal',
+      eyebrows: 'asymmetric',
+      animation: 'tilt'
+    },
+    surprised: {
+      eyes: 'shocked',
+      mouth: 'open',
+      cheeks: 'normal',
+      eyebrows: 'raised',
+      animation: 'jump'
+    },
+    laughing: {
+      eyes: 'closed',
+      mouth: 'laugh',
+      cheeks: 'rosy',
+      eyebrows: 'normal',
+      animation: 'shake'
+    },
+    neutral: {
+      eyes: 'normal',
+      mouth: 'neutral',
+      cheeks: 'normal',
+      eyebrows: 'normal',
+      animation: 'idle'
+    },
+    listening: {
+      eyes: 'attentive',
+      mouth: 'slight_smile',
+      cheeks: 'normal',
+      eyebrows: 'interested',
+      animation: 'nod'
+    },
+    speaking: {
+      eyes: 'engaging',
+      mouth: 'talking',
+      cheeks: 'animated',
+      eyebrows: 'expressive',
+      animation: 'gesture'
+    }
+  };
+
+  const baseExpression = emotions[emotion] || emotions.neutral;
+  
+  // Behavior tree logic: modify expression based on context and user emotion
+  const modifiedExpression = { ...baseExpression };
+  
+  // Responsive behavior to user emotion
+  if (userEmotion === 'sad') {
+    modifiedExpression.eyes = 'sympathetic';
+    modifiedExpression.eyebrows = 'concerned';
+  } else if (userEmotion === 'happy') {
+    modifiedExpression.cheeks = 'rosy';
+    modifiedExpression.animation = 'joyful';
+  }
+
+  // Adjust intensity
+  modifiedExpression.intensity = Math.max(0, Math.min(1, intensity));
+  
+  // Add context-specific modifications
+  if (context.includes('question')) {
+    modifiedExpression.eyebrows = 'curious';
+    modifiedExpression.eyes = 'inquisitive';
+  }
+
+  return {
+    ...modifiedExpression,
+    timestamp: Date.now(),
+    duration: 2000, // Animation duration in ms
+    transition: 'smooth'
+  };
+}
+
 app.listen(PORT, () => {
   console.log(`🚀 Enhanced Server running on http://localhost:${PORT}`);
   console.log('🔧 Features enabled:');
   console.log('   🎤 Realtime Voice Conversation (WebRTC)');
+  console.log('   📹 FaceTime-style Video Chat with Real-time Vision');
+  console.log('   🎭 AI Pixel Art Faces with Emotional Behavior Trees');
   console.log('   🖼️  Image Generation & Analysis');
   console.log('   📝 Enhanced Transcription (gpt-4o-transcribe)');
   console.log('   🎯 Multimodal AI Capabilities');
   console.log('   🔇 Advanced Noise Reduction');
   console.log('   📊 Confidence Scores & Log Probabilities');
+  console.log('   🤖 Tool-controlled Facial Expressions');
   
   if (!process.env.OPENAI_API_KEY) {
     console.log('⚠️  WARNING: OPENAI_API_KEY environment variable is not set!');

@@ -20,6 +20,16 @@ A comprehensive multimodal AI application powered by OpenAI's latest APIs. Featu
 - **💾 Download Support**: Save generated images directly to your device
 - **🖼️ Image History**: Keep track of all generated images and analyses
 
+### 📹 FaceTime-Style Video Chat
+- **👁️ Real-time Vision**: Camera feed with live emotion detection using GPT-4o Vision
+- **🎭 AI Pixel Art Faces**: Cute animated pixel art faces with emotional expressions
+- **🧠 Behavior Tree System**: Intelligent emotional state management and reactions
+- **😊 Emotion Mirroring**: AI can mirror user's detected emotions when enabled
+- **🎯 Context-Aware Expressions**: AI face reacts to conversation content and tone
+- **🎨 Multiple Face Styles**: Choose from Cute, Professional, Playful, or Super Expressive
+- **📊 Real-time Analytics**: Live emotion analysis with confidence scores
+- **🔄 Dynamic Responsiveness**: Adjustable emotion sensitivity and behavior settings
+
 ### ⚙️ Advanced Settings
 - **🎛️ Real-time Controls**: Adjust all settings without disconnecting
 - **🎯 Speech Speed Control**: Fine-tune AI speaking speed (0.25x - 1.5x)
@@ -75,6 +85,7 @@ A comprehensive multimodal AI application powered by OpenAI's latest APIs. Featu
    - Click "🚀 Connect" to start voice conversation
    - Use "🎨 Generate Image" for image creation
    - Upload images for analysis with "🔍 Analyze Image"
+   - Click "📹 Start Video Chat" for FaceTime-style interaction with AI pixel faces
 
 ## 🎯 How It Works
 
@@ -97,6 +108,8 @@ Voice Realtime ←→ Image Gen ←→ Image Analysis
 - **`POST /generate-image`**: Generate images using DALL-E 3
 - **`POST /analyze-image`**: Analyze uploaded images with GPT-4o vision
 - **`POST /transcribe`**: Enhanced audio transcription with confidence scores
+- **`POST /analyze-video-frame`**: Real-time video frame emotion analysis with GPT-4o Vision
+- **`POST /update-ai-face`**: Control AI pixel art facial expressions via behavior trees
 
 ## 🎛️ Advanced Configuration
 
@@ -126,6 +139,18 @@ Voice Realtime ←→ Image Gen ←→ Image Analysis
 - **Generation Sizes**: Square (1024x1024), Portrait (1024x1792), Landscape (1792x1024)
 - **Styles**: Natural (photorealistic) or Vivid (enhanced colors and contrast)
 - **Analysis Detail**: High-resolution image understanding with GPT-4o vision
+
+### 📹 FaceTime Video Settings
+- **AI Face Styles**: 
+  - 🥰 Cute & Friendly (Default)
+  - 👔 Professional
+  - 🎮 Playful
+  - 🎭 Super Expressive
+- **Emotion Responsiveness**: 0.1 (Subtle) - 1.0 (Intense) sensitivity control
+- **Real-time Analysis**: Toggle live emotion detection from camera feed
+- **Face Mirroring**: AI mirrors user's detected facial expressions
+- **Context-Aware Expressions**: AI face reacts to conversation content and keywords
+- **Behavior Tree Controls**: Intelligent emotional state management system
 
 ### ⚙️ Performance Settings
 - **Speech Speed**: 0.25x (Very Slow) - 1.5x (Very Fast)
@@ -182,6 +207,13 @@ Voice Realtime ←→ Image Gen ←→ Image Analysis
 - Confidence score display when available
 - Language detection and optimization
 - Streaming transcription support
+
+### FaceTime Video System
+- Real-time camera access with emotion detection every 2 seconds
+- Pixel art face engine with 16x16 grid-based rendering
+- Behavior tree system for intelligent emotional responses
+- WebRTC integration for synchronized audio/video experience
+- Canvas-based pixel art with crisp rendering and smooth animations
 
 ## 🌐 Browser Compatibility
 

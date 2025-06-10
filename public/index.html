@@ -167,13 +167,14 @@
     <div class="max-w-7xl mx-auto p-6">
         <!-- Header -->
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-white mb-2">🎤🖼️ Enhanced AI Assistant</h1>
-            <p class="text-gray-400">Voice Conversation • Image Generation & Analysis • Advanced Transcription • Multimodal AI</p>
+            <h1 class="text-4xl font-bold text-white mb-2">🎤🖼️📹 Enhanced AI Assistant</h1>
+            <p class="text-gray-400">Voice • Video • Images • FaceTime-style AI Chat with Pixel Art Faces</p>
             <div class="flex justify-center space-x-4 mt-4 text-sm text-gray-500">
                 <span>🎯 GPT-4o Realtime</span>
+                <span>📹 Real-time Vision</span>
+                <span>🎭 AI Pixel Faces</span>
                 <span>🖼️ DALL-E 3</span>
                 <span>📝 GPT-4o Transcribe</span>
-                <span>🎵 WebRTC</span>
             </div>
         </div>
 
@@ -349,6 +350,56 @@
                     </div>
                 </div>
 
+                <!-- FaceTime Video Chat -->
+                <div class="card p-4 interactive-element">
+                    <h3 class="text-sm font-medium text-white mb-3">📹 FaceTime Chat</h3>
+                    <div class="space-y-3">
+                        <button id="startVideoBtn" class="w-full px-4 py-3 btn-primary rounded-md text-sm font-semibold">
+                            📹 Start Video Chat
+                        </button>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="toggleCameraBtn" class="px-3 py-2 btn-secondary rounded-md text-sm font-semibold" disabled>
+                                📷 Camera
+                            </button>
+                            <button id="switchCameraBtn" class="px-3 py-2 btn-secondary rounded-md text-sm font-semibold" disabled>
+                                🔄 Switch
+                            </button>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">AI Face Style</label>
+                            <select id="aiFaceStyle" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                <option value="cute" selected>🥰 Cute & Friendly</option>
+                                <option value="professional">👔 Professional</option>
+                                <option value="playful">🎮 Playful</option>
+                                <option value="expressive">🎭 Super Expressive</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Emotion Responsiveness</label>
+                            <input type="range" id="emotionSensitivity" min="0.1" max="1.0" step="0.1" value="0.7" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>Subtle</span>
+                                <span id="emotionValue">0.7</span>
+                                <span>Intense</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="realTimeAnalysis" checked class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 transition-all duration-200">
+                                <label for="realTimeAnalysis" class="text-xs text-gray-400">📊 Real-time emotion analysis</label>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="faceMirroring" class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 transition-all duration-200">
+                                <label for="faceMirroring" class="text-xs text-gray-400">😊 Mirror user expressions</label>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="contextualFaces" checked class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 transition-all duration-200">
+                                <label for="contextualFaces" class="text-xs text-gray-400">🧠 Context-aware expressions</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Audio Visualizer -->
                 <div class="card p-4 interactive-element">
                     <h3 class="text-sm font-medium text-white mb-3">🎵 Audio Visualizer</h3>
@@ -372,9 +423,14 @@
                             <h2 class="text-lg font-semibold text-white">💬 Multimodal Conversation</h2>
                             <div class="flex items-center space-x-3">
                                 <div id="statusDisplay" class="text-sm text-gray-400 px-3 py-1 bg-gray-800 rounded-md">🔄 Ready to connect</div>
-                                <button id="toggleImageMode" class="text-sm px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors duration-200">
-                                    🖼️ Images
-                                </button>
+                                <div class="flex space-x-2">
+                                    <button id="toggleImageMode" class="text-sm px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors duration-200">
+                                        🖼️ Images
+                                    </button>
+                                    <button id="toggleVideoMode" class="text-sm px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors duration-200">
+                                        📹 FaceTime
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -437,6 +493,79 @@
                                         <div class="text-gray-500 text-sm text-center mt-20">
                                             🔍 Upload an image to see analysis here...
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FaceTime Video View -->
+                        <div id="videoView" class="h-full hidden">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
+                                <!-- User Camera -->
+                                <div class="flex flex-col">
+                                    <div class="flex items-center space-x-2 mb-3">
+                                        <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                        <span class="text-sm font-medium text-white">📹 You</span>
+                                        <div class="flex space-x-2 ml-auto">
+                                            <span id="videoStatus" class="text-xs text-gray-500">Camera Off</span>
+                                            <button id="fullscreenUserBtn" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">⛶ Full</button>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 bg-gray-900 rounded-md overflow-hidden border border-gray-700 relative">
+                                        <video id="userVideo" autoplay muted class="w-full h-full object-cover hidden"></video>
+                                        <div id="userVideoPlaceholder" class="w-full h-full flex items-center justify-center text-gray-500">
+                                            <div class="text-center">
+                                                <div class="text-6xl mb-4">📷</div>
+                                                <div class="text-sm">Click "Start Video Chat" to begin</div>
+                                            </div>
+                                        </div>
+                                        <!-- Emotion Detection Overlay -->
+                                        <div id="emotionOverlay" class="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded hidden">
+                                            <span id="detectedEmotion">😐 Neutral</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- AI Pixel Face -->
+                                <div class="flex flex-col">
+                                    <div class="flex items-center space-x-2 mb-3">
+                                        <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                        <span class="text-sm font-medium text-white">🎭 AI Assistant</span>
+                                        <div class="flex space-x-2 ml-auto">
+                                            <span id="aiFaceEmotion" class="text-xs text-gray-500">😐 Neutral</span>
+                                            <button id="fullscreenAIBtn" class="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 bg-gray-800 rounded transition-colors duration-200">⛶ Full</button>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 bg-gray-900 rounded-md overflow-hidden border border-gray-700 relative flex items-center justify-center">
+                                        <canvas id="aiPixelFace" class="max-w-full max-h-full" style="image-rendering: pixelated;"></canvas>
+                                        <!-- Behavior Tree Debug Info -->
+                                        <div id="behaviorDebug" class="absolute top-4 left-4 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded hidden">
+                                            <div>🧠 Behavior: <span id="currentBehavior">Idle</span></div>
+                                            <div>📊 Intensity: <span id="currentIntensity">0.5</span></div>
+                                        </div>
+                                        <!-- Face Style Indicator -->
+                                        <div id="faceStyleIndicator" class="absolute bottom-4 right-4 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                                            🥰 Cute Style
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Video Chat Controls -->
+                            <div class="mt-4 p-3 bg-gray-900 rounded-lg border border-gray-700">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex space-x-4 text-sm text-gray-400">
+                                        <span>📊 Frames analyzed: <span id="framesAnalyzed">0</span></span>
+                                        <span>🎭 Expressions shown: <span id="expressionsShown">0</span></span>
+                                        <span>⏱️ Session time: <span id="sessionTime">00:00</span></span>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button id="debugModeBtn" class="text-xs text-gray-500 hover:text-gray-300 px-3 py-1 bg-gray-800 rounded transition-colors duration-200">
+                                            🐛 Debug
+                                        </button>
+                                        <button id="recordSessionBtn" class="text-xs text-gray-500 hover:text-gray-300 px-3 py-1 bg-gray-800 rounded transition-colors duration-200">
+                                            🔴 Record
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -692,6 +821,317 @@
             }
         }
 
+        // FaceTime Video Chat System
+        let videoStream = null;
+        let pixelFaceEngine = null;
+        let videoAnalysisInterval = null;
+        let sessionStartTime = null;
+        let framesAnalyzedCount = 0;
+        let expressionsShownCount = 0;
+
+        // Initialize FaceTime features
+        function initializeFaceTime() {
+            if (typeof PixelFaceEngine !== 'undefined') {
+                pixelFaceEngine = new PixelFaceEngine('aiPixelFace', 300, 300);
+                console.log('📹 FaceTime system initialized');
+            } else {
+                console.error('❌ PixelFaceEngine not loaded');
+            }
+        }
+
+        // Start video chat
+        async function startVideoChat() {
+            const startBtn = document.getElementById('startVideoBtn');
+            const originalText = startBtn.textContent;
+            
+            try {
+                startBtn.disabled = true;
+                startBtn.textContent = '📹 Starting...';
+
+                // Get user media
+                videoStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 640 },
+                        height: { ideal: 480 },
+                        frameRate: { ideal: 15 }
+                    },
+                    audio: false // Audio is handled by voice chat
+                });
+
+                // Display user video
+                const userVideo = document.getElementById('userVideo');
+                const placeholder = document.getElementById('userVideoPlaceholder');
+                
+                userVideo.srcObject = videoStream;
+                userVideo.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+
+                // Update UI
+                document.getElementById('videoStatus').textContent = 'Camera On';
+                document.getElementById('toggleCameraBtn').disabled = false;
+                document.getElementById('switchCameraBtn').disabled = false;
+                startBtn.textContent = '📹 Stop Video Chat';
+                startBtn.className = 'w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md';
+
+                // Start real-time analysis
+                if (document.getElementById('realTimeAnalysis').checked) {
+                    startVideoAnalysis();
+                }
+
+                // Start session timer
+                sessionStartTime = Date.now();
+                startSessionTimer();
+
+                // Show video view
+                showVideoView();
+                
+                console.log('📹 Video chat started successfully');
+
+            } catch (error) {
+                console.error('❌ Failed to start video chat:', error);
+                alert('Failed to access camera: ' + error.message);
+                startBtn.disabled = false;
+                startBtn.textContent = originalText;
+            }
+        }
+
+        // Stop video chat
+        function stopVideoChat() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = null;
+            }
+
+            // Hide user video
+            const userVideo = document.getElementById('userVideo');
+            const placeholder = document.getElementById('userVideoPlaceholder');
+            
+            userVideo.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+
+            // Stop analysis
+            if (videoAnalysisInterval) {
+                clearInterval(videoAnalysisInterval);
+                videoAnalysisInterval = null;
+            }
+
+            // Reset UI
+            const startBtn = document.getElementById('startVideoBtn');
+            startBtn.textContent = '📹 Start Video Chat';
+            startBtn.className = 'w-full px-4 py-3 btn-primary rounded-md text-sm font-semibold';
+            startBtn.disabled = false;
+
+            document.getElementById('videoStatus').textContent = 'Camera Off';
+            document.getElementById('toggleCameraBtn').disabled = true;
+            document.getElementById('switchCameraBtn').disabled = true;
+
+            console.log('📹 Video chat stopped');
+        }
+
+        // Start real-time video analysis
+        function startVideoAnalysis() {
+            if (!videoStream) return;
+
+            videoAnalysisInterval = setInterval(async () => {
+                try {
+                    const frame = await captureVideoFrame();
+                    if (frame) {
+                        analyzeVideoFrame(frame);
+                        framesAnalyzedCount++;
+                        document.getElementById('framesAnalyzed').textContent = framesAnalyzedCount;
+                    }
+                } catch (error) {
+                    console.error('❌ Video analysis error:', error);
+                }
+            }, 2000); // Analyze every 2 seconds to avoid rate limits
+        }
+
+        // Capture video frame as base64
+        function captureVideoFrame() {
+            return new Promise((resolve) => {
+                const video = document.getElementById('userVideo');
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                
+                ctx.drawImage(video, 0, 0);
+                const dataURL = canvas.toDataURL('image/jpeg', 0.8);
+                resolve(dataURL);
+            });
+        }
+
+        // Analyze video frame with AI
+        async function analyzeVideoFrame(frameData) {
+            try {
+                const response = await fetch('/analyze-video-frame', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        frame: frameData,
+                        prompt: 'Analyze the person\'s facial expression and emotional state. Respond with a single emotion word: happy, sad, excited, thinking, confused, surprised, laughing, neutral, focused, or engaged.'
+                    })
+                });
+
+                const data = await response.json();
+                if (data.choices && data.choices[0]) {
+                    const analysis = data.choices[0].message.content.toLowerCase();
+                    processEmotionAnalysis(analysis);
+                }
+            } catch (error) {
+                console.error('❌ Frame analysis failed:', error);
+            }
+        }
+
+        // Process emotion analysis and update AI face
+        function processEmotionAnalysis(analysis) {
+            // Extract emotion from analysis
+            const emotions = ['happy', 'sad', 'excited', 'thinking', 'confused', 'surprised', 'laughing', 'neutral', 'focused', 'engaged'];
+            let detectedEmotion = 'neutral';
+            
+            for (const emotion of emotions) {
+                if (analysis.includes(emotion)) {
+                    detectedEmotion = emotion;
+                    break;
+                }
+            }
+
+            // Update user emotion display
+            document.getElementById('detectedEmotion').textContent = `😊 ${detectedEmotion}`;
+            document.getElementById('emotionOverlay').classList.remove('hidden');
+
+            // Update AI face based on behavior tree
+            if (pixelFaceEngine) {
+                const context = {
+                    userEmotion: detectedEmotion,
+                    context: window.realtimeClient?.currentContext || '',
+                    isListening: window.realtimeClient?.isVoiceActive || false,
+                    isSpeaking: window.realtimeClient?.aiSpeaking || false,
+                    faceMirroring: document.getElementById('faceMirroring').checked,
+                    contextualFaces: document.getElementById('contextualFaces').checked
+                };
+
+                const decision = pixelFaceEngine.behaviorTree.evaluate(context);
+                
+                // Apply face mirroring if enabled
+                if (context.faceMirroring) {
+                    decision.emotion = detectedEmotion;
+                }
+
+                const sensitivity = parseFloat(document.getElementById('emotionSensitivity').value);
+                pixelFaceEngine.setEmotion(decision.emotion, decision.intensity * sensitivity);
+                
+                // Update UI displays
+                document.getElementById('aiFaceEmotion').textContent = `🎭 ${decision.emotion}`;
+                document.getElementById('currentBehavior').textContent = decision.emotion;
+                document.getElementById('currentIntensity').textContent = (decision.intensity * sensitivity).toFixed(1);
+                
+                expressionsShownCount++;
+                document.getElementById('expressionsShown').textContent = expressionsShownCount;
+            }
+        }
+
+        // Session timer
+        function startSessionTimer() {
+            setInterval(() => {
+                if (sessionStartTime) {
+                    const elapsed = Date.now() - sessionStartTime;
+                    const minutes = Math.floor(elapsed / 60000);
+                    const seconds = Math.floor((elapsed % 60000) / 1000);
+                    document.getElementById('sessionTime').textContent = 
+                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+
+        // Camera controls
+        function toggleCamera() {
+            if (!videoStream) return;
+            
+            const videoTrack = videoStream.getVideoTracks()[0];
+            if (videoTrack) {
+                videoTrack.enabled = !videoTrack.enabled;
+                document.getElementById('videoStatus').textContent = videoTrack.enabled ? 'Camera On' : 'Camera Off';
+                document.getElementById('toggleCameraBtn').textContent = videoTrack.enabled ? '📷 Camera' : '📷 Off';
+            }
+        }
+
+        // Switch camera (front/back on mobile)
+        async function switchCamera() {
+            if (!videoStream) return;
+
+            try {
+                const constraints = {
+                    video: {
+                        facingMode: videoStream.getVideoTracks()[0].getSettings().facingMode === 'user' ? 'environment' : 'user'
+                    }
+                };
+
+                const newStream = await navigator.mediaDevices.getUserMedia(constraints);
+                const userVideo = document.getElementById('userVideo');
+                
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = newStream;
+                userVideo.srcObject = newStream;
+                
+                console.log('🔄 Camera switched');
+            } catch (error) {
+                console.error('❌ Failed to switch camera:', error);
+            }
+        }
+
+        // Toggle between views
+        function toggleVideoMode() {
+            const conversationView = document.getElementById('conversationView');
+            const imageView = document.getElementById('imageView');
+            const videoView = document.getElementById('videoView');
+            const toggleBtn = document.getElementById('toggleVideoMode');
+
+            if (videoView.classList.contains('hidden')) {
+                showVideoView();
+            } else {
+                showConversationView();
+            }
+        }
+
+        function showVideoView() {
+            document.getElementById('conversationView').classList.add('hidden');
+            document.getElementById('imageView').classList.add('hidden');
+            document.getElementById('videoView').classList.remove('hidden');
+            document.getElementById('toggleImageMode').textContent = '💬 Chat';
+            document.getElementById('toggleVideoMode').textContent = '💬 Chat';
+        }
+
+        // Debug mode toggle
+        function toggleDebugMode() {
+            const debugInfo = document.getElementById('behaviorDebug');
+            debugInfo.classList.toggle('hidden');
+            document.getElementById('debugModeBtn').textContent = 
+                debugInfo.classList.contains('hidden') ? '🐛 Debug' : '🐛 Hide';
+        }
+
+        // Update face style
+        function updateFaceStyle() {
+            const style = document.getElementById('aiFaceStyle').value;
+            const indicator = document.getElementById('faceStyleIndicator');
+            
+            const styleMap = {
+                cute: '🥰 Cute Style',
+                professional: '👔 Professional',
+                playful: '🎮 Playful',
+                expressive: '🎭 Super Expressive'
+            };
+            
+            indicator.textContent = styleMap[style] || '🥰 Cute Style';
+            
+            // Could modify pixel face engine parameters based on style
+            if (pixelFaceEngine) {
+                // Adjust face characteristics based on style
+                console.log(`🎨 Face style changed to: ${style}`);
+            }
+        }
+
         // Clear logs function
         function clearLogs() {
             const debugLogs = document.getElementById('debugLogs');
@@ -703,15 +1143,17 @@
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
             initializeVisualizer();
+            initializeFaceTime();
             
             // Initialize slider displays
             updateSliderDisplay('speechSpeed', 'speedValue', 'x');
             updateSliderDisplay('temperature', 'tempValue');
             updateSliderDisplay('vadThreshold', 'vadValue');
             updateSliderDisplay('silenceDuration', 'silenceValue', 'ms');
+            updateSliderDisplay('emotionSensitivity', 'emotionValue');
             
             // Add event listeners for all settings
-            ['aiVoice', 'transcriptionModel', 'interruptResponse', 'noiseReduction', 'includeLogprobs'].forEach(id => {
+            ['aiVoice', 'transcriptionModel', 'interruptResponse', 'noiseReduction', 'includeLogprobs', 'aiFaceStyle', 'realTimeAnalysis', 'faceMirroring', 'contextualFaces'].forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
                     element.addEventListener('change', updateSettings);
@@ -731,6 +1173,29 @@
             if (toggleImageModeBtn) toggleImageModeBtn.addEventListener('click', toggleImageMode);
             if (clearGeneratedImagesBtn) clearGeneratedImagesBtn.addEventListener('click', clearGeneratedImages);
             if (clearAnalysisBtn) clearAnalysisBtn.addEventListener('click', clearImageAnalysis);
+            
+            // Add event listeners for FaceTime functionality
+            const startVideoBtn = document.getElementById('startVideoBtn');
+            const toggleCameraBtn = document.getElementById('toggleCameraBtn');
+            const switchCameraBtn = document.getElementById('switchCameraBtn');
+            const toggleVideoModeBtn = document.getElementById('toggleVideoMode');
+            const debugModeBtn = document.getElementById('debugModeBtn');
+            const aiFaceStyleSelect = document.getElementById('aiFaceStyle');
+            
+            if (startVideoBtn) {
+                startVideoBtn.addEventListener('click', function() {
+                    if (videoStream) {
+                        stopVideoChat();
+                    } else {
+                        startVideoChat();
+                    }
+                });
+            }
+            if (toggleCameraBtn) toggleCameraBtn.addEventListener('click', toggleCamera);
+            if (switchCameraBtn) switchCameraBtn.addEventListener('click', switchCamera);
+            if (toggleVideoModeBtn) toggleVideoModeBtn.addEventListener('click', toggleVideoMode);
+            if (debugModeBtn) debugModeBtn.addEventListener('click', toggleDebugMode);
+            if (aiFaceStyleSelect) aiFaceStyleSelect.addEventListener('change', updateFaceStyle);
             
             // Enable analyze button when image is selected
             if (imageUpload) {
@@ -759,6 +1224,7 @@
         window.clearLogs = clearLogs;
     </script>
 
+    <script src="pixel-face-engine.js"></script>
     <script src="realtime-webrtc-client.js"></script>
 </body>
 </html> 

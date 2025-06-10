@@ -1,7 +1,7 @@
 {
   "name": "realtime-api-backend",
-  "version": "2.0.0",
-  "description": "Enhanced Realtime API backend with voice conversation, image generation/analysis, and advanced transcription capabilities",
+  "version": "2.1.0",
+  "description": "Enhanced Realtime API backend with voice conversation, image generation/analysis, and FaceTime-style video with AI pixel art faces",
   "main": "server.js",
   "type": "module",
   "scripts": {
