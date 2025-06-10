@@ -1,47 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎤 AI Voice Assistant</title>
+    <title>AI Voice Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        border: "hsl(214.3 31.8% 91.4%)",
-                        input: "hsl(214.3 31.8% 91.4%)",
-                        ring: "hsl(222.2 84% 4.9%)",
-                        background: "hsl(0 0% 100%)",
-                        foreground: "hsl(222.2 84% 4.9%)",
+                        border: "hsl(217.2 32.6% 17.5%)",
+                        input: "hsl(217.2 32.6% 17.5%)",
+                        ring: "hsl(212.7 26.8% 83.9%)",
+                        background: "hsl(222.2 84% 4.9%)",
+                        foreground: "hsl(210 40% 98%)",
                         primary: {
-                            DEFAULT: "hsl(222.2 47.4% 11.2%)",
-                            foreground: "hsl(210 40% 98%)",
-                        },
-                        secondary: {
-                            DEFAULT: "hsl(210 40% 96%)",
+                            DEFAULT: "hsl(210 40% 98%)",
                             foreground: "hsl(222.2 84% 4.9%)",
                         },
+                        secondary: {
+                            DEFAULT: "hsl(217.2 32.6% 17.5%)",
+                            foreground: "hsl(210 40% 98%)",
+                        },
                         destructive: {
-                            DEFAULT: "hsl(0 84.2% 60.2%)",
+                            DEFAULT: "hsl(0 62.8% 30.6%)",
                             foreground: "hsl(210 40% 98%)",
                         },
                         muted: {
-                            DEFAULT: "hsl(210 40% 96%)",
-                            foreground: "hsl(215.4 16.3% 46.9%)",
+                            DEFAULT: "hsl(217.2 32.6% 17.5%)",
+                            foreground: "hsl(215 20.2% 65.1%)",
                         },
                         accent: {
-                            DEFAULT: "hsl(210 40% 96%)",
-                            foreground: "hsl(222.2 84% 4.9%)",
+                            DEFAULT: "hsl(217.2 32.6% 17.5%)",
+                            foreground: "hsl(210 40% 98%)",
                         },
                         popover: {
-                            DEFAULT: "hsl(0 0% 100%)",
-                            foreground: "hsl(222.2 84% 4.9%)",
+                            DEFAULT: "hsl(222.2 84% 4.9%)",
+                            foreground: "hsl(210 40% 98%)",
                         },
                         card: {
-                            DEFAULT: "hsl(0 0% 100%)",
-                            foreground: "hsl(222.2 84% 4.9%)",
+                            DEFAULT: "hsl(222.2 84% 4.9%)",
+                            foreground: "hsl(210 40% 98%)",
                         },
                     },
                 }
@@ -53,333 +54,271 @@
         
         body {
             font-family: 'Inter', sans-serif;
+            background: #000000;
         }
         
-        .pulse-ring {
-            animation: pulse-ring 2s ease-out infinite;
+        .status-pulse {
+            animation: status-pulse 2s ease-in-out infinite;
         }
         
-        @keyframes pulse-ring {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1.5);
-                opacity: 0;
-            }
+        @keyframes status-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
         
-        .status-indicator {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+        .visualizer-bar {
+            transition: height 0.1s ease;
+            background: linear-gradient(to top, #3b82f6, #8b5cf6);
         }
         
-        .status-indicator.active::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: inherit;
-            background: currentColor;
-            opacity: 0.2;
-            animation: pulse-ring 2s ease-out infinite;
+        .btn-primary {
+            @apply bg-white text-black hover:bg-gray-100 transition-colors duration-200 font-medium;
         }
         
-        .log-scroll {
-            max-height: 300px;
-            overflow-y: auto;
+        .btn-secondary {
+            @apply bg-gray-800 text-white hover:bg-gray-700 border border-gray-700 transition-colors duration-200;
         }
         
-        .log-scroll::-webkit-scrollbar {
+        .card {
+            @apply bg-gray-900 border border-gray-800 rounded-lg;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar {
             width: 4px;
         }
         
-        .log-scroll::-webkit-scrollbar-track {
-            background: hsl(210 40% 96%);
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: #4b5563;
             border-radius: 2px;
         }
         
-        .log-scroll::-webkit-scrollbar-thumb {
-            background: hsl(215.4 16.3% 46.9%);
-            border-radius: 2px;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
         }
     </style>
 </head>
-<body class="min-h-screen gradient-bg">
-    <div class="container mx-auto p-6 max-w-7xl">
+<body class="min-h-screen bg-black text-white antialiased">
+    <div class="max-w-7xl mx-auto p-6">
         <!-- Header -->
         <div class="text-center mb-8">
-            <div class="glass-card rounded-2xl p-8 shadow-2xl">
-                <h1 class="text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-                    🎤 AI Voice Assistant
-                </h1>
-                <p class="text-lg text-slate-600 mb-4">
-                    Powered by GPT-4o • Real-time conversation with interruption support
-                </p>
-                <div class="flex justify-center items-center space-x-4 text-sm text-slate-500">
-                    <span class="flex items-center">🚀 WebRTC</span>
-                    <span class="flex items-center">🧠 Semantic VAD</span>
-                    <span class="flex items-center">📝 Live Transcription</span>
-                    <span class="flex items-center">⚡ Low Latency</span>
-                </div>
-            </div>
+            <h1 class="text-4xl font-bold text-white mb-2">AI Voice Assistant</h1>
+            <p class="text-gray-400">Real-time conversation with GPT-4o</p>
         </div>
 
-        <!-- Main Status Dashboard -->
-        <div class="glass-card rounded-2xl shadow-2xl p-6 mb-6">
-            <div class="text-center mb-6">
-                <h2 class="text-2xl font-semibold text-slate-800 mb-2">🎯 System Status</h2>
-                <p class="text-slate-600">Monitor all aspects of your voice conversation</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Left Panel: Controls & Status -->
+            <div class="lg:col-span-1 space-y-6">
                 <!-- Connection Status -->
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
-                    <div class="flex items-center space-x-3">
-                        <div id="connectionStatusIcon" class="w-4 h-4 rounded-full bg-red-500 status-indicator"></div>
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-slate-700">🔗 Connection</div>
-                            <div id="connectionStatusText" class="text-xs text-slate-500">Disconnected</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Microphone Status -->
-                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
-                    <div class="flex items-center space-x-3">
-                        <div id="micStatusIcon" class="w-4 h-4 rounded-full bg-gray-400 status-indicator"></div>
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-slate-700">🎤 Microphone</div>
-                            <div id="micStatusText" class="text-xs text-slate-500">Inactive</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Voice Detection -->
-                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
-                    <div class="flex items-center space-x-3">
-                        <div id="vadStatusIcon" class="w-4 h-4 rounded-full bg-gray-400 status-indicator"></div>
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-slate-700">👂 Voice Detection</div>
-                            <div id="vadStatusText" class="text-xs text-slate-500">Listening</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI Status -->
-                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 border border-orange-200">
-                    <div class="flex items-center space-x-3">
-                        <div id="aiStatusIcon" class="w-4 h-4 rounded-full bg-gray-400 status-indicator"></div>
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-slate-700">🤖 AI Response</div>
-                            <div id="aiStatusText" class="text-xs text-slate-500">Idle</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Current Status Display -->
-            <div class="bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl p-4 mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <span class="text-sm font-medium text-slate-700">📊 Status:</span>
-                        <span id="statusDisplay" class="ml-2 text-red-600 font-medium">Not Connected</span>
-                    </div>
-                    <div>
-                        <span class="text-sm font-medium text-slate-700">⚡ Last Action:</span>
-                        <span id="lastActionDisplay" class="ml-2 text-slate-500">None</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex flex-wrap gap-4 justify-center">
-                <button id="connectBtn" 
-                    class="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
-                    🚀 Connect to AI
-                </button>
-                <button id="micBtn" 
-                    class="px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100" 
-                    disabled>
-                    🎤 Start Voice Chat
-                </button>
-                <button id="clearBtn" 
-                    class="px-8 py-3 bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-semibold rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105">
-                    🧹 Clear History
-                </button>
-            </div>
-        </div>
-
-        <!-- Audio Visualizer -->
-        <div class="glass-card rounded-2xl shadow-2xl p-6 mb-6">
-            <div class="text-center mb-6">
-                <h3 class="text-xl font-semibold text-slate-800 mb-2">🎵 Audio Visualizer</h3>
-                <p class="text-sm text-slate-600">Real-time visualization of your voice input</p>
-            </div>
-            <div id="visualizer" class="flex justify-center items-end space-x-1 h-20 bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-4">
-                <!-- Bars will be generated here -->
-            </div>
-        </div>
-
-        <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
-            <!-- Chat Area -->
-            <div class="xl:col-span-3">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Your Speech -->
-                    <div class="glass-card rounded-2xl shadow-2xl">
-                        <div class="p-6 border-b border-slate-200 bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-2xl">
-                            <h3 class="text-xl font-semibold text-slate-800 flex items-center">
-                                <span class="mr-3 text-2xl">🗣️</span>Your Speech
-                            </h3>
-                            <p class="text-sm text-slate-600 mt-1">Live transcription of what you're saying</p>
-                        </div>
-                        <div id="userTranscript" class="p-6 min-h-[400px] max-h-[500px] overflow-y-auto log-scroll">
-                            <div class="text-slate-400 italic text-center mt-20">
-                                <div class="text-4xl mb-4">🎤</div>
-                                <div>Start speaking to see your words appear here...</div>
+                <div class="card p-4">
+                    <h3 class="text-sm font-medium text-white mb-3">Status</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-400">Connection</span>
+                            <div class="flex items-center space-x-2">
+                                <div id="connectionStatusIcon" class="w-2 h-2 rounded-full bg-red-500"></div>
+                                <span id="connectionStatusText" class="text-xs text-gray-300">Disconnected</span>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- AI Response -->
-                    <div class="glass-card rounded-2xl shadow-2xl">
-                        <div class="p-6 border-b border-slate-200 bg-gradient-to-r from-green-50 to-green-100 rounded-t-2xl">
-                            <h3 class="text-xl font-semibold text-slate-800 flex items-center">
-                                <span class="mr-3 text-2xl">🤖</span>AI Response
-                            </h3>
-                            <p class="text-sm text-slate-600 mt-1">What the AI is saying back to you</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-400">Microphone</span>
+                            <div class="flex items-center space-x-2">
+                                <div id="micStatusIcon" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                <span id="micStatusText" class="text-xs text-gray-300">Inactive</span>
+                            </div>
                         </div>
-                        <div id="aiTranscript" class="p-6 min-h-[400px] max-h-[500px] overflow-y-auto log-scroll">
-                            <div class="text-slate-400 italic text-center mt-20">
-                                <div class="text-4xl mb-4">🤖</div>
-                                <div>AI responses will appear here...</div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-400">AI Status</span>
+                            <div class="flex items-center space-x-2">
+                                <div id="aiStatusIcon" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                <span id="aiStatusText" class="text-xs text-gray-300">Idle</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Settings and Debug Panel -->
-            <div class="space-y-6">
-                <!-- Voice Settings -->
-                <div class="glass-card rounded-2xl shadow-2xl">
-                    <div class="p-4 border-b border-slate-200 bg-gradient-to-r from-purple-50 to-purple-100 rounded-t-2xl">
-                        <h3 class="text-lg font-semibold text-slate-800 flex items-center">
-                            <span class="mr-2 text-xl">⚙️</span>Voice Settings
-                        </h3>
-                    </div>
-                    <div class="p-4 space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">🎭 AI Voice</label>
-                            <select id="aiVoice" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white">
-                                <option value="alloy">🎪 Alloy - Balanced & Clear</option>
-                                <option value="ash">🌋 Ash - Deep & Warm</option>
-                                <option value="ballad">🎼 Ballad - Smooth & Musical</option>
-                                <option value="coral">🌊 Coral - Bright & Energetic</option>
-                                <option value="echo">📢 Echo - Rich & Resonant</option>
-                                <option value="sage">🧙‍♂️ Sage - Wise & Calm</option>
-                                <option value="shimmer" selected>✨ Shimmer - Most Human-Like & Natural</option>
-                                <option value="verse">📚 Verse - Natural & Conversational</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">⚡ Response Speed</label>
-                            <select id="vadEagerness" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white">
-                                <option value="low">🐌 Slow - Let me finish talking completely</option>
-                                <option value="medium">⚖️ Medium - Balanced timing</option>
-                                <option value="high" selected>⚡ Fast - Quick, responsive replies</option>
-                                <option value="auto">🧠 Auto - Smart conversation timing</option>
-                            </select>
-                        </div>
-
-                        <div class="flex items-center space-x-3 p-3 bg-slate-50 rounded-lg">
-                            <input type="checkbox" id="interruptResponse" checked 
-                                class="w-5 h-5 text-purple-600 border-slate-300 rounded focus:ring-purple-500">
-                            <label for="interruptResponse" class="text-sm font-medium text-slate-700">
-                                🚦 Allow me to interrupt the AI
-                            </label>
-                        </div>
-
-                        <button onclick="updateSettings()" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105">
-                            ✅ Apply Settings
+                <!-- Controls -->
+                <div class="card p-4">
+                    <h3 class="text-sm font-medium text-white mb-3">Controls</h3>
+                    <div class="space-y-3">
+                        <button id="connectBtn" class="w-full px-4 py-2 btn-primary rounded-md text-sm">
+                            Connect
                         </button>
-                    </div>
-                </div>
-
-                <!-- Connection Info -->
-                <div class="glass-card rounded-2xl shadow-2xl">
-                    <div class="p-4 border-b border-slate-200 bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-2xl">
-                        <h3 class="text-lg font-semibold text-slate-800 flex items-center">
-                            <span class="mr-2 text-xl">📡</span>Connection Info
-                        </h3>
-                    </div>
-                    <div class="p-4 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium text-slate-700">Protocol:</span>
-                            <span class="text-sm text-blue-600 font-mono">WebRTC</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium text-slate-700">Model:</span>
-                            <span class="text-sm text-green-600 font-mono">GPT-4o</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium text-slate-700">Transcription:</span>
-                            <span class="text-sm text-purple-600 font-mono">Real-time</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium text-slate-700">VAD:</span>
-                            <span class="text-sm text-orange-600 font-mono">Semantic</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Debug Logs -->
-                <div class="glass-card rounded-2xl shadow-2xl">
-                    <div class="p-4 border-b border-slate-200 bg-gradient-to-r from-orange-50 to-orange-100 rounded-t-2xl flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-slate-800 flex items-center">
-                            <span class="mr-2 text-xl">📊</span>Debug Logs
-                        </h3>
-                        <button onclick="clearLogs()" 
-                            class="text-xs px-3 py-1 bg-orange-200 hover:bg-orange-300 text-orange-800 rounded-md transition-colors duration-200">
+                        <button id="micBtn" class="w-full px-4 py-2 btn-secondary rounded-md text-sm" disabled>
+                            Start Voice
+                        </button>
+                        <button id="clearBtn" class="w-full px-4 py-2 btn-secondary rounded-md text-sm">
                             Clear
                         </button>
                     </div>
-                    <div id="debugLogs" class="p-4 font-mono text-xs log-scroll bg-slate-50 rounded-b-2xl">
-                        <div class="text-blue-600">🔄 Ready to connect...</div>
+                </div>
+
+                <!-- Settings -->
+                <div class="card p-4">
+                    <h3 class="text-sm font-medium text-white mb-3">Settings</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Voice</label>
+                            <select id="aiVoice" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="alloy">Alloy</option>
+                                <option value="echo">Echo</option>
+                                <option value="shimmer" selected>Shimmer</option>
+                                <option value="nova">Nova</option>
+                                <option value="sage">Sage</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Response Speed</label>
+                            <select id="vadEagerness" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="low">Slow</option>
+                                <option value="medium">Medium</option>
+                                <option value="high" selected>Fast</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="checkbox" id="interruptResponse" checked class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500">
+                            <label for="interruptResponse" class="text-xs text-gray-400">Allow interruption</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Visualizer -->
+                <div class="card p-4">
+                    <h3 class="text-sm font-medium text-white mb-3">Audio</h3>
+                    <div id="visualizer" class="flex justify-center items-end space-x-1 h-16 bg-gray-800 rounded-md p-2">
+                        <!-- Visualizer bars will be generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Chat -->
+            <div class="lg:col-span-3">
+                <div class="card h-[600px] flex flex-col">
+                    <!-- Chat Header -->
+                    <div class="p-4 border-b border-gray-800">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-lg font-semibold text-white">Conversation</h2>
+                            <div id="statusDisplay" class="text-sm text-gray-400">Ready to connect</div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div class="flex-1 p-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+                            <!-- User Speech -->
+                            <div class="flex flex-col">
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                    <span class="text-sm font-medium text-white">You</span>
+                                </div>
+                                <div id="userTranscript" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
+                                    <div class="text-gray-500 text-sm text-center mt-20">
+                                        Start speaking to see your words here...
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AI Response -->
+                            <div class="flex flex-col">
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                    <span class="text-sm font-medium text-white">AI</span>
+                                </div>
+                                <div id="aiTranscript" class="flex-1 p-3 bg-gray-800 rounded-md overflow-y-auto scrollbar-thin">
+                                    <div class="text-gray-500 text-sm text-center mt-20">
+                                        AI responses will appear here...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Debug Logs -->
+                    <div class="border-t border-gray-800">
+                        <div class="p-3">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-medium text-gray-400">Debug Logs</span>
+                                <button onclick="clearLogs()" class="text-xs text-gray-500 hover:text-gray-300">Clear</button>
+                            </div>
+                            <div id="debugLogs" class="h-20 p-2 bg-gray-900 rounded text-xs font-mono overflow-y-auto scrollbar-thin">
+                                <div class="text-blue-400">Ready to connect...</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Error Container -->
-        <div id="errorContainer" class="mt-6"></div>
     </div>
+
+    <script>
+        // Initialize visualizer bars
+        function initializeVisualizer() {
+            const visualizer = document.getElementById('visualizer');
+            const numBars = 20;
+            
+            for (let i = 0; i < numBars; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'visualizer-bar w-1 bg-gradient-to-t from-blue-500 to-purple-500 rounded-sm';
+                bar.style.height = '4px';
+                visualizer.appendChild(bar);
+            }
+        }
+
+        // Update visualizer with audio data
+        function updateVisualizer(audioData) {
+            const bars = document.querySelectorAll('.visualizer-bar');
+            if (!audioData || !bars.length) return;
+            
+            bars.forEach((bar, index) => {
+                const dataIndex = Math.floor((index / bars.length) * audioData.length);
+                const height = Math.max(4, (audioData[dataIndex] / 255) * 60);
+                bar.style.height = `${height}px`;
+            });
+        }
+
+        // Settings update function
+        function updateSettings() {
+            if (window.realtimeClient && window.realtimeClient.updateSettings) {
+                const settings = {
+                    voice: document.getElementById('aiVoice').value,
+                    vadEagerness: document.getElementById('vadEagerness').value,
+                    interruptResponse: document.getElementById('interruptResponse').checked
+                };
+                window.realtimeClient.updateSettings(settings);
+            }
+        }
+
+        // Clear logs function
+        function clearLogs() {
+            const debugLogs = document.getElementById('debugLogs');
+            if (debugLogs) {
+                debugLogs.innerHTML = '<div class="text-blue-400">Logs cleared...</div>';
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeVisualizer();
+            
+            // Add event listeners for settings
+            ['aiVoice', 'vadEagerness', 'interruptResponse'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('change', updateSettings);
+                }
+            });
+        });
+
+        // Expose functions globally for the client
+        window.updateVisualizer = updateVisualizer;
+        window.updateSettings = updateSettings;
+        window.clearLogs = clearLogs;
+    </script>
 
     <script src="realtime-webrtc-client.js"></script>
 </body>
-</html> 
 </html> 
