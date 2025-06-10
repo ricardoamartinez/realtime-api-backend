@@ -185,24 +185,38 @@
                         <div>
                             <label class="block text-xs text-gray-400 mb-1">🎭 Voice</label>
                             <select id="aiVoice" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                                <option value="alloy">🎪 Alloy - Balanced</option>
-                                <option value="echo">📢 Echo - Rich</option>
-                                <option value="shimmer" selected>✨ Shimmer - Human-like</option>
-                                <option value="nova">⭐ Nova - Bright</option>
-                                <option value="sage">🧙‍♂️ Sage - Calm</option>
+                                <option value="alloy">🎪 Alloy - Balanced & Professional</option>
+                                <option value="ash">🌋 Ash - Rich & Warm</option>
+                                <option value="ballad">🎵 Ballad - Melodic & Smooth</option>
+                                <option value="coral">🐚 Coral - Bright & Cheerful</option>
+                                <option value="echo">📢 Echo - Deep & Resonant</option>
+                                <option value="sage">🧙‍♂️ Sage - Calm & Wise</option>
+                                <option value="shimmer">✨ Shimmer - Sparkling & Clear</option>
+                                <option value="verse" selected>🎭 Verse - Most Human-like (Latest)</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs text-gray-400 mb-1">⚡ Response Speed</label>
+                            <label class="block text-xs text-gray-400 mb-1">⚡ VAD Eagerness</label>
                             <select id="vadEagerness" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                                <option value="low">🐌 Slow - Patient</option>
+                                <option value="low">🐌 Low - Patient (Large chunks)</option>
                                 <option value="medium">⚖️ Medium - Balanced</option>
-                                <option value="high" selected>⚡ Fast - Responsive</option>
+                                <option value="high">⚡ High - Responsive (Fast chunks)</option>
+                                <option value="auto" selected>🤖 Auto - AI Adaptive (Latest)</option>
                             </select>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <input type="checkbox" id="interruptResponse" checked class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 transition-all duration-200">
-                            <label for="interruptResponse" class="text-xs text-gray-400">🚦 Allow interruption</label>
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="interruptResponse" checked class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 transition-all duration-200">
+                                <label for="interruptResponse" class="text-xs text-gray-400">🚦 Allow AI interruption</label>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="noiseReduction" checked class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 transition-all duration-200">
+                                <label for="noiseReduction" class="text-xs text-gray-400">🔇 Noise reduction (Latest)</label>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="includeLogprobs" checked class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 transition-all duration-200">
+                                <label for="includeLogprobs" class="text-xs text-gray-400">📊 Confidence scores (Latest)</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -312,7 +326,9 @@
                 const settings = {
                     voice: document.getElementById('aiVoice').value,
                     vadEagerness: document.getElementById('vadEagerness').value,
-                    interruptResponse: document.getElementById('interruptResponse').checked
+                    interruptResponse: document.getElementById('interruptResponse').checked,
+                    noiseReduction: document.getElementById('noiseReduction').checked,
+                    includeLogprobs: document.getElementById('includeLogprobs').checked
                 };
                 window.realtimeClient.updateSettings(settings);
             }
@@ -331,7 +347,7 @@
             initializeVisualizer();
             
             // Add event listeners for settings
-            ['aiVoice', 'vadEagerness', 'interruptResponse'].forEach(id => {
+            ['aiVoice', 'vadEagerness', 'interruptResponse', 'noiseReduction', 'includeLogprobs'].forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
                     element.addEventListener('change', updateSettings);
