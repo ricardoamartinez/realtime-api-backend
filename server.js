@@ -43,12 +43,7 @@ app.post('/session', async (req, res) => {
         interrupt_response: true
       },
       input_audio_transcription = {
-        model: 'gpt-4o-transcribe',
-        language: 'en',
-        prompt: 'This is a clear conversation in English with natural speech patterns.'
-      },
-      input_audio_noise_reduction = {
-        type: 'near_field'
+        model: 'whisper-1'
       },
       include_logprobs = true,
       tools = []
@@ -113,7 +108,6 @@ app.post('/session', async (req, res) => {
       input_audio_format: 'pcm16',
       output_audio_format: 'pcm16',
       input_audio_transcription,
-      input_audio_noise_reduction,
       tools: enhancedTools,
       tool_choice: 'auto',
       tracing: 'auto'
@@ -152,9 +146,7 @@ app.post('/transcription-session', async (req, res) => {
     const {
       input_audio_format = 'pcm16',
       input_audio_transcription = {
-        model: 'gpt-4o-transcribe',
-        language: 'en',
-        prompt: ''
+        model: 'whisper-1'
       },
       modalities = ['audio', 'text'],
       turn_detection = {
@@ -162,9 +154,6 @@ app.post('/transcription-session', async (req, res) => {
         threshold: 0.5,
         prefix_padding_ms: 300,
         silence_duration_ms: 200
-      },
-      input_audio_noise_reduction = {
-        type: 'near_field'
       },
       include = ['item.input_audio_transcription.logprobs']
     } = req.body;
@@ -174,7 +163,6 @@ app.post('/transcription-session', async (req, res) => {
       input_audio_transcription,
       modalities,
       turn_detection,
-      input_audio_noise_reduction,
       include
     };
 
@@ -311,7 +299,7 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
 app.post('/transcribe', upload.single('audio'), async (req, res) => {
   try {
     const {
-      model = 'gpt-4o-transcribe',
+      model = 'whisper-1',
       language = 'en',
       prompt = '',
       response_format = 'json',
