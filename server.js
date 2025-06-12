@@ -29,19 +29,19 @@ app.post('/session', async (req, res) => {
         modalities: ['text', 'audio'],
         turn_detection: {
           type: 'server_vad', // Use server VAD for more reliable detection
-          threshold: 0.5,
-          prefix_padding_ms: 300,
-          silence_duration_ms: 200,
+          threshold: 0.3, // Lower threshold for mobile/phone audio
+          prefix_padding_ms: 500, // More padding for better capture
+          silence_duration_ms: 800, // Longer silence duration for mobile
           create_response: true,
           interrupt_response: true
         },
         input_audio_transcription: {
-          model: 'whisper-1', // Use whisper-1 for more reliable transcription
-          prompt: 'This is a clear conversation in English with natural speech patterns.',
+          model: 'gpt-4o-transcribe', // Use the latest transcription model for better mobile audio
+          prompt: 'This is a clear conversation in English. The user is speaking naturally through their phone or mobile device.',
           language: 'en'
         },
         input_audio_noise_reduction: {
-          type: 'near_field' // Latest noise reduction feature
+          type: 'far_field' // Better for mobile/phone audio than near_field
         },
         temperature: 0.8,
         max_response_output_tokens: 4096
@@ -71,9 +71,9 @@ app.listen(PORT, () => {
   console.log('🔧 Using OpenAI Realtime API with latest features:');
   console.log('   📱 Model: gpt-4o-realtime-preview-2025-06-03');
   console.log('   🎭 Voice: verse (latest)');
-  console.log('   🧠 VAD: server_vad with threshold 0.5');
-  console.log('   🎤 Transcription: whisper-1');
-  console.log('   🔇 Noise Reduction: near_field');
+  console.log('   🧠 VAD: server_vad with threshold 0.3');
+  console.log('   🎤 Transcription: gpt-4o-transcribe');
+  console.log('   🔇 Noise Reduction: far_field');
   
   if (!process.env.OPENAI_API_KEY) {
     console.log('⚠️  WARNING: OPENAI_API_KEY environment variable is not set!');
