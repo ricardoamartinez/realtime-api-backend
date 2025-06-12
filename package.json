@@ -1,6 +1,6 @@
 {
   "name": "realtime-api-backend",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Enhanced Realtime API backend with voice conversation, image generation/analysis, and FaceTime-style video with AI pixel art faces - Updated for OpenAI Realtime API 2024-12-17 with Semantic VAD and Enhanced Function Calling",
   "main": "server.js",
   "type": "module",

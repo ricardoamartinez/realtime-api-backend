@@ -182,6 +182,24 @@ The AI can call functions to:
 
 ### Common Issues
 
+#### ⚠️ Rate Limiting (MOST COMMON)
+```
+❌ Transcription failed - 429 Too Many Requests
+⚠️ OpenAI Rate Limit Reached
+```
+**✅ SOLUTION (Automated):**
+- System automatically detects and handles rate limits
+- Auto-disconnects to prevent further issues
+- Wait 2-3 minutes before reconnecting
+- Use pre-configured stable settings (Server VAD + Whisper-1)
+
+**Manual Steps if Needed:**
+1. Wait 2-3 minutes minimum
+2. Ensure VAD Type: "Server VAD (Classic)"
+3. Ensure Transcription: "Whisper-1 (Classic)"
+4. Uncheck "Confidence scores" checkbox
+5. Avoid rapid reconnections
+
 #### Connection Problems
 ```
 ⚠️ Connection failed
@@ -189,8 +207,9 @@ The AI can call functions to:
 - Verify OpenAI API key is set correctly
 - Check internet connection
 - Ensure browser supports WebRTC
+- Wait if you recently hit rate limits
 
-#### Audio Issues
+#### Audio Issues (After Rate Limits Are Resolved)
 ```
 ❌ Transcription failed - please speak more clearly
 ```
@@ -200,7 +219,8 @@ The AI can call functions to:
 - Try different VAD settings
 
 #### Performance Issues
-- Use `server_vad` instead of `semantic_vad` on slower devices
+- Use `server_vad` (default) instead of `semantic_vad` 
+- Use `whisper-1` (default) instead of GPT-4o models
 - Reduce `max_response_output_tokens` for faster responses
 - Use `near_field` noise reduction for better performance
 
@@ -251,9 +271,34 @@ The system continuously analyzes:
 - Close other apps for better performance
 - Use landscape orientation for video features
 
+## ⚠️ **IMPORTANT: Rate Limiting Solution Implemented**
+
+**✅ FIXED:** This version includes comprehensive solutions for OpenAI rate limiting issues that were affecting transcription reliability.
+
+### 🛠️ **Rate Limit Protection Features:**
+- **Smart Detection:** Automatically detects 429 rate limit errors
+- **Auto-Disconnect:** Prevents further API calls when rate limited
+- **Connection Throttling:** Enforces wait times between reconnection attempts
+- **Optimal Defaults:** Uses Server VAD + Whisper-1 for maximum reliability
+- **Clear Guidance:** Provides actionable solutions when rate limits occur
+
+### 🎯 **Recommended Settings (Pre-configured):**
+- **VAD Type:** Server VAD (Classic) ⚡ Reliable
+- **Transcription:** Whisper-1 (Classic) ⚡ Stable  
+- **Confidence Scores:** Disabled (reduces API calls)
+- **Connection:** Wait 2-3 minutes between reconnects
+
 ## 🔄 Version History
 
-### v4.0.0 (Latest) - December 2024
+### v4.1.0 (Latest) - December 2024 🚀
+- **MAJOR FIX:** Resolved OpenAI 429 rate limiting errors
+- Added intelligent rate limit detection and auto-disconnect
+- Updated to stable defaults (Server VAD + Whisper-1)
+- Enhanced error handling with specific guidance
+- Improved user experience with actionable solutions
+- Added connection throttling to prevent rapid reconnects
+
+### v4.0.0 - December 2024
 - Updated to OpenAI Realtime API 2024-12-17
 - Added semantic VAD with eagerness control
 - Enhanced function calling capabilities
