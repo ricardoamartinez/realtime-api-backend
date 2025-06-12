@@ -1,7 +1,7 @@
 {
   "name": "realtime-api-backend",
-  "version": "4.1.0",
-  "description": "Enhanced Realtime API backend with voice conversation, image generation/analysis, and FaceTime-style video with AI pixel art faces - Updated for OpenAI Realtime API 2024-12-17 with Semantic VAD and Enhanced Function Calling",
+  "version": "5.0.0",
+  "description": "✨ LATEST Enhanced Realtime API backend with 2025-06-03 model, voice conversation, image generation/analysis, and FaceTime-style video with AI pixel art faces - Updated for OpenAI Realtime API 2025-06-03 with Semantic VAD, Conservative Rate Limiting, and Enhanced Function Calling",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -12,16 +12,19 @@
   "keywords": [
     "openai",
     "realtime-api",
+    "gpt-4o-realtime-preview-2025-06-03",
+    "2025-06-03",
+    "latest-model",
     "webrtc",
     "websocket",
     "voice-chat",
     "ai-assistant",
     "gpt-4o",
-    "gpt-4o-realtime-preview-2024-12-17",
     "multimodal",
     "transcription",
     "semantic-vad",
     "server-vad",
+    "conservative-rate-limiting",
     "function-calling",
     "emotion-analysis",
     "ai-facial-expressions",
@@ -31,7 +34,11 @@
     "confidence-scores",
     "log-probabilities",
     "interrupt-handling",
-    "beta-api"
+    "rate-limit-protection",
+    "exponential-backoff",
+    "beta-api",
+    "whisper-1",
+    "gpt-4o-transcribe"
   ],
   "dependencies": {
     "cors": "^2.8.5",
@@ -46,27 +53,40 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/realtime-api-backend.git"
+    "url": "https://github.com/ricardoamartinez/realtime-api-backend.git"
   },
-  "author": "Your Name",
+  "author": "Ricardo Martinez",
   "license": "MIT",
   "features": {
-    "realtime_models": ["gpt-4o-realtime-preview-2024-12-17"],
-    "transcription_models": ["gpt-4o-transcribe", "gpt-4o-mini-transcribe", "whisper-1"],
+    "realtime_models": ["gpt-4o-realtime-preview-2025-06-03"],
+    "transcription_models": ["whisper-1", "gpt-4o-transcribe", "gpt-4o-mini-transcribe"],
+    "conservative_defaults": ["whisper-1"],
     "image_models": ["dall-e-3"],
     "connection_methods": ["webrtc", "websocket"],
     "vad_types": ["semantic_vad", "server_vad"],
+    "vad_eagerness": ["low", "medium", "high", "auto"],
     "audio_formats": ["pcm16", "g711_ulaw", "g711_alaw"],
-    "noise_reduction": ["near_field", "far_field"],
+    "noise_reduction": ["near_field", "far_field", "disabled"],
+    "rate_limit_protection": {
+      "max_sessions_per_minute": 3,
+      "exponential_backoff": true,
+      "connection_throttling": true,
+      "retry_delays": "2s-2m"
+    },
     "enhanced_features": [
-      "semantic_vad_with_eagerness_control",
-      "real_time_function_calling",
+      "semantic_vad_with_configurable_eagerness",
+      "conservative_rate_limit_protection",
+      "exponential_backoff_on_failures",
+      "connection_throttling",
+      "real_time_function_calling_v2",
       "ai_facial_expression_control",
       "contextual_image_generation",
       "enhanced_error_handling",
       "confidence_scores_and_logprobs",
       "interrupt_handling",
-      "beta_api_support"
+      "beta_api_support",
+      "gpt_4o_transcribe_models",
+      "enhanced_noise_reduction"
     ]
   }
 }

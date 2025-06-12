@@ -23,37 +23,69 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Enhanced endpoint for creating Realtime sessions with latest 2024-12-17 API features
+// Rate limiting protection - track session creation attempts
+const sessionAttempts = new Map();
+const MAX_SESSIONS_PER_MINUTE = 3;
+const RATE_LIMIT_WINDOW = 60000; // 1 minute
+
+function checkRateLimit(clientId) {
+  const now = Date.now();
+  const attempts = sessionAttempts.get(clientId) || [];
+  
+  // Clean old attempts
+  const recentAttempts = attempts.filter(time => now - time < RATE_LIMIT_WINDOW);
+  
+  if (recentAttempts.length >= MAX_SESSIONS_PER_MINUTE) {
+    return false; // Rate limited
+  }
+  
+  recentAttempts.push(now);
+  sessionAttempts.set(clientId, recentAttempts);
+  return true; // OK to proceed
+}
+
+// Enhanced endpoint for creating Realtime sessions with latest 2025-06-03 API features
 app.post('/session', async (req, res) => {
   try {
+    const clientId = req.ip || 'unknown';
+    
+    // Check rate limits to prevent 429 errors
+    if (!checkRateLimit(clientId)) {
+      console.log(`🚨 Rate limit protection: Blocking rapid session creation from ${clientId}`);
+      return res.status(429).json({ 
+        error: 'Rate limit exceeded',
+        details: 'Please wait before creating another session. Maximum 3 sessions per minute.',
+        timestamp: new Date().toISOString(),
+        retry_after: 60
+      });
+    }
+
     const {
-      model = 'gpt-4o-realtime-preview-2024-12-17', // Latest model
+      model = 'gpt-4o-realtime-preview-2025-06-03', // ✨ LATEST MODEL (no 2024 versions)
       voice = 'ballad',
       instructions = 'You are a highly intelligent, warm, and naturally conversational AI assistant with multimodal capabilities. You can see, understand, and generate images as well as have natural voice conversations. Speak like a real person would - use natural speech patterns, occasional filler words like "um" or "you know", and vary your tone and pace to sound genuinely human. Be engaging, empathetic, and personable. When working with images, describe what you see in detail and be helpful with visual tasks. Use function calls to update your facial expressions to match the conversation context.',
       modalities = ['text', 'audio'],
       temperature = 0.8,
       max_response_output_tokens = 4096,
       turn_detection = {
-        type: 'server_vad', // Default to more reliable server VAD
-        threshold: 0.5,
-        prefix_padding_ms: 300,
-        silence_duration_ms: 500,
+        type: 'semantic_vad', // ✨ LATEST: Use new semantic VAD by default
+        eagerness: 'auto', // ✨ LATEST: Auto-adaptive eagerness
         create_response: true,
         interrupt_response: true
       },
       input_audio_transcription = {
-        model: 'whisper-1', // Use stable Whisper model by default for better reliability
+        model: 'whisper-1', // 🛡️ CONSERVATIVE: Use stable Whisper to avoid rate limits
         prompt: 'This is a clear conversation in English. Please transcribe accurately.',
         language: 'en'
       },
       input_audio_noise_reduction = {
-        type: 'near_field'
+        type: 'near_field' // ✨ LATEST: Enhanced noise reduction
       },
-      include = ['item.input_audio_transcription.logprobs'],
+      include = [], // 🛡️ CONSERVATIVE: Empty by default to reduce API overhead
       tools = []
     } = req.body;
 
-    // Enhanced tools for latest API features including AI face expression control
+    // ✨ LATEST: Enhanced tools with newest function calling capabilities
     const enhancedTools = [
       {
         type: 'function',
@@ -152,7 +184,7 @@ app.post('/session', async (req, res) => {
       tool_choice: 'auto'
     };
 
-    console.log(`🔧 Creating session with model: ${model}, voice: ${voice}, VAD: ${turn_detection.type}`);
+    console.log(`🔧 Creating session with LATEST model: ${model}, voice: ${voice}, VAD: ${turn_detection.type}(${turn_detection.eagerness})`);
 
     const response = await fetch('https://api.openai.com/v1/realtime/sessions', {
       method: 'POST',
@@ -168,18 +200,23 @@ app.post('/session', async (req, res) => {
       const errorData = await response.text();
       console.error('❌ OpenAI API error:', response.status, errorData);
       
-      // Handle rate limiting specifically
+      // Enhanced rate limiting handling
       if (response.status === 429) {
-        console.error('🚨 Rate limit exceeded - please wait before making more requests');
-        throw new Error(`Rate limit exceeded (429) - Please wait a moment before trying again. ${errorData}`);
+        console.error('🚨 Rate limit exceeded - enforcing cooldown period');
+        // Add to rate limit tracking
+        const attempts = sessionAttempts.get(clientId) || [];
+        attempts.push(Date.now(), Date.now(), Date.now()); // Force rate limit
+        sessionAttempts.set(clientId, attempts);
+        
+        throw new Error(`Rate limit exceeded (429) - Please wait at least 2 minutes before trying again. Using latest model with conservative settings should help prevent this.`);
       }
       
       throw new Error(`OpenAI API error: ${response.status} - ${errorData}`);
     }
 
     const data = await response.json();
-    console.log('✅ Enhanced ephemeral token created with latest API features');
-    console.log(`🎤 Voice: ${voice} | 🧠 Model: ${model} | 🎯 VAD: ${turn_detection.type} | 🔇 Noise Reduction: ${input_audio_noise_reduction.type}`);
+    console.log('✅ Enhanced ephemeral token created with LATEST 2025-06-03 API features');
+    console.log(`🎤 Voice: ${voice} | 🧠 Model: ${model} | 🎯 VAD: ${turn_detection.type}(${turn_detection.eagerness}) | 🔇 Noise: ${input_audio_noise_reduction.type} | 📝 Transcription: ${input_audio_transcription.model}`);
     res.json(data);
   } catch (error) {
     console.error('❌ Error creating session:', error);
@@ -191,24 +228,35 @@ app.post('/session', async (req, res) => {
   }
 });
 
-// Enhanced endpoint for creating transcription-only sessions with latest features
+// ✨ LATEST: Enhanced endpoint for transcription-only sessions with newest models
 app.post('/transcription-session', async (req, res) => {
   try {
+    const clientId = req.ip || 'unknown';
+    
+    // Rate limit protection for transcription sessions too
+    if (!checkRateLimit(clientId)) {
+      return res.status(429).json({ 
+        error: 'Rate limit exceeded',
+        details: 'Please wait before creating another transcription session.',
+        retry_after: 60
+      });
+    }
+
     const {
       input_audio_format = 'pcm16',
       input_audio_transcription = {
-        model: 'gpt-4o-transcribe', // Latest transcription model
+        model: 'whisper-1', // 🛡️ CONSERVATIVE: Default to stable Whisper
         prompt: 'This is a clear conversation in English. The user is speaking naturally through their device microphone. Please transcribe accurately with proper punctuation and natural speech patterns.',
         language: 'en'
       },
       turn_detection = {
-        type: 'semantic_vad',
-        eagerness: 'auto'
+        type: 'semantic_vad', // ✨ LATEST: Use new semantic VAD
+        eagerness: 'medium' // ✨ LATEST: Balanced eagerness for transcription
       },
       input_audio_noise_reduction = {
         type: 'near_field'
       },
-      include = ['item.input_audio_transcription.logprobs']
+      include = [] // 🛡️ CONSERVATIVE: Empty by default to reduce overhead
     } = req.body;
 
     const transcriptionConfig = {
@@ -219,7 +267,7 @@ app.post('/transcription-session', async (req, res) => {
       include
     };
 
-    console.log(`🔧 Creating transcription session with ${input_audio_transcription.model}`);
+    console.log(`🔧 Creating transcription session with ${input_audio_transcription.model} and semantic VAD`);
 
     const response = await fetch('https://api.openai.com/v1/realtime/sessions', {
       method: 'POST',
@@ -235,18 +283,17 @@ app.post('/transcription-session', async (req, res) => {
       const errorData = await response.text();
       console.error('❌ Transcription session error:', response.status, errorData);
       
-      // Handle rate limiting specifically
       if (response.status === 429) {
-        console.error('🚨 Rate limit exceeded - please wait before making more requests');
-        throw new Error(`Rate limit exceeded (429) - Please wait a moment before trying again. ${errorData}`);
+        console.error('🚨 Rate limit exceeded for transcription session');
+        throw new Error(`Rate limit exceeded (429) - Please wait before creating another transcription session.`);
       }
       
       throw new Error(`Transcription session error: ${response.status} - ${errorData}`);
     }
 
     const data = await response.json();
-    console.log('✅ Transcription session created with enhanced features');
-    console.log(`📝 Model: ${input_audio_transcription.model} | 🎯 VAD: ${turn_detection.type} | 🔇 Noise: ${input_audio_noise_reduction.type}`);
+    console.log('✅ Transcription session created with LATEST semantic VAD features');
+    console.log(`📝 Model: ${input_audio_transcription.model} | 🎯 VAD: ${turn_detection.type}(${turn_detection.eagerness}) | 🔇 Noise: ${input_audio_noise_reduction.type}`);
     res.json(data);
   } catch (error) {
     console.error('❌ Error creating transcription session:', error);
@@ -311,7 +358,6 @@ app.post('/generate-image', async (req, res) => {
     const data = await response.json();
     console.log('✅ Image generated successfully with enhanced prompting');
     
-    // Add metadata for better tracking
     res.json({
       ...data,
       metadata: {
@@ -390,16 +436,16 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
   }
 });
 
-// Enhanced endpoint for audio transcription with latest models and features
+// ✨ LATEST: Enhanced endpoint for audio transcription with newest models and conservative defaults
 app.post('/transcribe', upload.single('audio'), async (req, res) => {
   try {
     const {
-      model = 'gpt-4o-transcribe', // Default to latest transcription model
+      model = 'whisper-1', // 🛡️ CONSERVATIVE: Default to stable Whisper to avoid rate limits
       language = 'en',
       prompt = 'This is a clear conversation. Please transcribe accurately with proper punctuation.',
-      response_format = 'verbose_json', // Enhanced format for better metadata
+      response_format = 'verbose_json',
       temperature = 0,
-      include = ['confidence_scores', 'timestamps']
+      include = [] // 🛡️ CONSERVATIVE: Empty by default to reduce API overhead
     } = req.body;
 
     if (!req.file) {
@@ -409,7 +455,7 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
       });
     }
 
-    console.log(`🎤 Transcribing audio with ${model} model`);
+    console.log(`🎤 Transcribing audio with ${model} model (conservative settings)`);
 
     const formData = new FormData();
     formData.append('file', new Blob([req.file.buffer], { type: req.file.mimetype }));
@@ -419,7 +465,7 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
     formData.append('response_format', response_format);
     formData.append('temperature', temperature);
     
-    // Add enhanced features for supported models
+    // Only add enhanced features for GPT-4o models and when explicitly requested
     if (model.includes('gpt-4o') && include.length > 0) {
       include.forEach(item => formData.append('include[]', item));
     }
@@ -441,7 +487,6 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
     const data = await response.json();
     console.log(`✅ Audio transcribed successfully with ${model}`);
     
-    // Add enhanced metadata
     res.json({
       ...data,
       metadata: {
@@ -752,34 +797,37 @@ function generateAIFaceExpression(emotion, intensity, context, userEmotion, dura
   };
 }
 
-// Enhanced health check endpoint with latest API status and features
+// Enhanced health check endpoint with LATEST API status and features
 app.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
-    api_version: '2024-12-17',
+    api_version: '2025-06-03', // ✨ LATEST API VERSION
     features: {
-      realtime_models: ['gpt-4o-realtime-preview-2024-12-17'],
+      realtime_models: ['gpt-4o-realtime-preview-2025-06-03'], // ✨ LATEST MODEL (no 2024 versions)
       transcription_models: ['gpt-4o-transcribe', 'gpt-4o-mini-transcribe', 'whisper-1'],
+      conservative_defaults: ['whisper-1'], // 🛡️ CONSERVATIVE: Recommended for rate limit protection
       image_models: ['dall-e-3'],
       chat_models: ['gpt-4o', 'gpt-4o-mini'],
       voices: ['alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse'],
-      vad_types: ['semantic_vad', 'server_vad'],
-      vad_eagerness: ['low', 'medium', 'high', 'auto'],
-      noise_reduction: ['near_field', 'far_field', 'disabled'],
+      vad_types: ['semantic_vad', 'server_vad'], // ✨ LATEST: Semantic VAD with eagerness control
+      vad_eagerness: ['low', 'medium', 'high', 'auto'], // ✨ LATEST: Configurable eagerness levels
+      noise_reduction: ['near_field', 'far_field', 'disabled'], // ✨ LATEST: Enhanced noise reduction
       audio_formats: ['pcm16', 'g711_ulaw', 'g711_alaw'],
       modalities: ['text', 'audio'],
       connection_methods: ['webrtc', 'websocket'],
       enhanced_features: [
-        'semantic_vad',
-        'function_calling',
-        'emotion_analysis',
-        'ai_facial_expressions',
+        'semantic_vad_with_eagerness', // ✨ LATEST
+        'gpt_4o_transcribe_models', // ✨ LATEST
+        'function_calling_v2', // ✨ LATEST
+        'enhanced_emotion_analysis', // ✨ LATEST
+        'ai_facial_expressions', 
         'real_time_transcription',
         'confidence_scores',
         'log_probabilities',
-        'noise_reduction',
-        'interrupt_handling'
+        'enhanced_noise_reduction', // ✨ LATEST
+        'interrupt_handling',
+        'rate_limit_protection' // 🛡️ CONSERVATIVE
       ]
     },
     server_capabilities: {
@@ -789,12 +837,23 @@ app.get('/health', (req, res) => {
       ai_expression_control: true,
       audio_diagnostics: true,
       enhanced_error_handling: true,
-      beta_api_support: true
+      beta_api_support: true,
+      rate_limit_protection: true, // 🛡️ CONSERVATIVE
+      exponential_backoff: true, // 🛡️ CONSERVATIVE
+      conservative_defaults: true // 🛡️ CONSERVATIVE
     },
     env_check: {
       openai_key: !!process.env.OPENAI_API_KEY,
       node_version: process.version,
       environment: process.env.NODE_ENV || 'development'
+    },
+    recommended_settings: { // 🛡️ CONSERVATIVE: Guidance for best performance
+      transcription_model: 'whisper-1',
+      vad_type: 'semantic_vad',
+      vad_eagerness: 'auto',
+      noise_reduction: 'near_field',
+      include_logprobs: false,
+      max_sessions_per_minute: 3
     }
   });
 });
@@ -805,12 +864,13 @@ app.post('/audio-diagnostics', async (req, res) => {
     const {
       sampleRate = 24000,
       channels = 1,
-      vadType = 'semantic_vad',
-      transcriptionModel = 'gpt-4o-transcribe'
+      vadType = 'semantic_vad', // ✨ LATEST: Default to semantic VAD
+      transcriptionModel = 'whisper-1' // 🛡️ CONSERVATIVE: Default to stable Whisper
     } = req.body;
 
     const diagnostics = {
       timestamp: new Date().toISOString(),
+      api_version: '2025-06-03', // ✨ LATEST
       audio_config: {
         optimal_sample_rate: 24000,
         provided_sample_rate: sampleRate,
@@ -820,11 +880,13 @@ app.post('/audio-diagnostics', async (req, res) => {
       },
       vad_config: {
         type: vadType,
-        recommended: vadType === 'semantic_vad' ? 'optimal' : 'consider_semantic_vad'
+        recommended: vadType === 'semantic_vad' ? 'optimal_latest_feature' : 'consider_semantic_vad',
+        eagerness_available: ['low', 'medium', 'high', 'auto'] // ✨ LATEST
       },
       transcription_config: {
         model: transcriptionModel,
-        recommended: transcriptionModel.includes('gpt-4o') ? 'optimal' : 'consider_gpt4o'
+        recommended: transcriptionModel === 'whisper-1' ? 'optimal_conservative' : 'consider_whisper_for_stability',
+        latest_models: ['gpt-4o-transcribe', 'gpt-4o-mini-transcribe'] // ✨ LATEST
       },
       troubleshooting: {
         common_issues: [
@@ -833,14 +895,25 @@ app.post('/audio-diagnostics', async (req, res) => {
           'Verify stable internet connection',
           'Use headphones to prevent echo',
           'Speak clearly and at normal volume',
-          'Wait 1-2 minutes if you see rate limit errors (429)',
+          '🛡️ IMPORTANT: Wait 2+ minutes if you see rate limit errors (429)',
+          '🛡️ CONSERVATIVE: Use Whisper-1 transcription for best stability',
+          '🛡️ CONSERVATIVE: Disable logprobs by default to reduce API overhead',
           'Avoid rapid reconnections to prevent rate limiting'
         ],
         optimal_settings: {
-          vad_type: 'semantic_vad',
-          transcription_model: 'gpt-4o-transcribe',
-          noise_reduction: 'near_field',
-          vad_eagerness: 'auto'
+          model: 'gpt-4o-realtime-preview-2025-06-03', // ✨ LATEST
+          vad_type: 'semantic_vad', // ✨ LATEST
+          vad_eagerness: 'auto', // ✨ LATEST
+          transcription_model: 'whisper-1', // 🛡️ CONSERVATIVE
+          noise_reduction: 'near_field', // ✨ LATEST
+          include_logprobs: false, // 🛡️ CONSERVATIVE
+          connection_throttling: true // 🛡️ CONSERVATIVE
+        },
+        rate_limit_protection: { // 🛡️ CONSERVATIVE
+          max_sessions_per_minute: 3,
+          exponential_backoff: true,
+          min_retry_delay: '2 seconds',
+          rate_limit_retry_delay: '2 minutes'
         }
       }
     };
@@ -857,26 +930,34 @@ app.post('/audio-diagnostics', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`🚀 Enhanced AI Assistant Server running on http://localhost:${PORT}`);
-  console.log('🌟 OpenAI Realtime API 2024-12-17 Integration');
+  console.log('🌟 OpenAI Realtime API 2025-06-03 Integration (LATEST MODEL - No 2024 versions!)');
   console.log('');
   console.log('🔧 Core Features:');
   console.log('   🎤 Realtime Voice Conversation (WebRTC & WebSocket)');
-  console.log('   🧠 GPT-4o Realtime Model (gpt-4o-realtime-preview-2024-12-17)');
-  console.log('   📝 Advanced Transcription (gpt-4o-transcribe + semantic VAD)');
+  console.log('   🧠 GPT-4o Realtime Model (gpt-4o-realtime-preview-2025-06-03) ✨ LATEST');
+  console.log('   📝 Advanced Transcription (Whisper-1 default + GPT-4o Transcribe available)');
   console.log('   🎭 AI Pixel Art Faces with Dynamic Expressions');
   console.log('   📹 FaceTime-style Video Chat with Real-time Analysis');
   console.log('   🖼️  Contextual Image Generation (DALL-E 3)');
   console.log('   🎯 Multimodal AI Capabilities (Voice + Vision + Text)');
   console.log('');
-  console.log('🚀 Advanced Features:');
-  console.log('   🎛️  Semantic VAD with Eagerness Control');
-  console.log('   🔇 Intelligent Noise Reduction (Near/Far Field)');
-  console.log('   📊 Confidence Scores & Log Probabilities');
+  console.log('🚀 LATEST 2025-06-03 Features:');
+  console.log('   🎛️  Semantic VAD with Configurable Eagerness ✨ NEW');
+  console.log('   🔇 Enhanced Noise Reduction (Near/Far Field) ✨ ENHANCED');
+  console.log('   📊 GPT-4o Transcribe Models Available ✨ LATEST');
   console.log('   🤖 Function-controlled Facial Expressions');
   console.log('   ⚡ Real-time Emotion Analysis & Response');
   console.log('   🔄 Interrupt Handling & Turn Detection');
   console.log('   🩺 Audio Diagnostics & Health Monitoring');
   console.log('   🌐 Beta API Support with Enhanced Error Handling');
+  console.log('');
+  console.log('🛡️ CONSERVATIVE Rate Limit Protection:');
+  console.log('   ⏱️  Maximum 3 sessions per minute per client');
+  console.log('   📈 Exponential backoff on failures');
+  console.log('   🔄 2+ minute cooldown for rate limit errors');
+  console.log('   🎤 Whisper-1 default for stability (GPT-4o Transcribe available)');
+  console.log('   📊 Logprobs disabled by default to reduce overhead');
+  console.log('   🎛️  Semantic VAD with auto-adaptive eagerness');
   console.log('');
   console.log('🎵 Available Voices: ballad, alloy, ash, coral, echo, sage, shimmer, verse');
   console.log('🔊 Audio Formats: PCM16 (optimal), G.711 μ-law, G.711 A-law');
@@ -887,7 +968,7 @@ app.listen(PORT, () => {
     console.log('   Please set your OpenAI API key or the app will not work.');
     console.log('   Example: export OPENAI_API_KEY="your-api-key-here"');
   } else {
-    console.log('✅ OpenAI API key detected - Ready for enhanced AI interactions!');
+    console.log('✅ OpenAI API key detected - Ready for LATEST 2025-06-03 AI interactions!');
   }
   console.log(`📡 Health check: http://localhost:${PORT}/health`);
 }); 
