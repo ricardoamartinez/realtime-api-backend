@@ -219,15 +219,12 @@
                             <select id="aiVoice" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                                 <option value="alloy">🎪 Alloy - Balanced & Professional</option>
                                 <option value="ash">🌋 Ash - Rich & Warm</option>
-                                <option value="ballad">🎵 Ballad - Melodic & Smooth</option>
+                                <option value="ballad" selected>🎵 Ballad - Melodic & Smooth</option>
                                 <option value="coral">🐚 Coral - Bright & Cheerful</option>
                                 <option value="echo">📢 Echo - Deep & Resonant</option>
-                                <option value="fable">📚 Fable - Storytelling</option>
-                                <option value="onyx">⚫ Onyx - Deep & Authoritative</option>
-                                <option value="nova">⭐ Nova - Young & Energetic</option>
                                 <option value="sage">🧙‍♂️ Sage - Calm & Wise</option>
                                 <option value="shimmer">✨ Shimmer - Sparkling & Clear</option>
-                                <option value="verse" selected>🎭 Verse - Most Human-like</option>
+                                <option value="verse">🎭 Verse - Most Human-like</option>
                             </select>
                         </div>
                         <div>
@@ -256,13 +253,21 @@
                     <h3 class="text-xs font-medium text-white mb-2">🎤 Audio Settings</h3>
                     <div class="space-y-2">
                         <div>
-                            <label class="block text-xs text-gray-400 mb-1">VAD Threshold</label>
-                            <input type="range" id="vadThreshold" min="0.1" max="0.9" step="0.1" value="0.5" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider">
-                            <div class="flex justify-between text-xs text-gray-500 mt-1">
-                                <span>Sensitive</span>
-                                <span id="vadValue">0.5</span>
-                                <span>Conservative</span>
-                            </div>
+                            <label class="block text-xs text-gray-400 mb-1">VAD Type</label>
+                            <select id="vadType" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                <option value="semantic_vad">🧠 Semantic VAD (Smart)</option>
+                                <option value="server_vad" selected>🎤 Server VAD (Classic) ⚡ Reliable</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">VAD Eagerness</label>
+                            <select id="vadEagerness" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                <option value="auto" selected>🎯 Auto (Smart Adaptive)</option>
+                                <option value="low">🐢 Low (Very Patient)</option>
+                                <option value="medium">⚖️ Medium (Balanced)</option>
+                                <option value="high">⚡ High (Very Responsive)</option>
+                            </select>
+                            <div class="text-xs text-gray-500 mt-1">Controls how quickly the AI responds to your speech</div>
                         </div>
                         <div>
                             <label class="block text-xs text-gray-400 mb-1">Silence Duration (ms)</label>
@@ -276,9 +281,18 @@
                         <div>
                             <label class="block text-xs text-gray-400 mb-1">Transcription Model</label>
                             <select id="transcriptionModel" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                                <option value="gpt-4o-transcribe" selected>🎯 GPT-4o Transcribe (Latest)</option>
-                                <option value="gpt-4o-mini-transcribe">⚡ GPT-4o Mini Transcribe</option>
-                                <option value="whisper-1">🔄 Whisper-1 (Classic)</option>
+                                <option value="gpt-4o-transcribe">🎯 GPT-4o Transcribe (Latest & Best)</option>
+                                <option value="gpt-4o-mini-transcribe">⚡ GPT-4o Mini Transcribe (Faster)</option>
+                                <option value="whisper-1" selected>🔄 Whisper-1 (Classic) ⚡ Stable</option>
+                            </select>
+                            <div class="text-xs text-gray-500 mt-1">Whisper-1 is most reliable. GPT-4o models may hit rate limits.</div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Noise Reduction</label>
+                            <select id="noiseReductionType" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                <option value="near_field" selected>📱 Near Field (Mobile/Headset)</option>
+                                <option value="far_field">🎤 Far Field (Room/Speaker)</option>
+                                <option value="none">🔇 None (Disabled)</option>
                             </select>
                         </div>
                         <div class="space-y-2">
@@ -291,8 +305,8 @@
                                 <label for="noiseReduction" class="text-xs text-gray-400">🔇 Noise reduction</label>
                             </div>
                             <div class="flex items-center space-x-2">
-                                <input type="checkbox" id="includeLogprobs" checked class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 transition-all duration-200">
-                                <label for="includeLogprobs" class="text-xs text-gray-400">📊 Confidence scores</label>
+                                <input type="checkbox" id="includeLogprobs" class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 transition-all duration-200">
+                                <label for="includeLogprobs" class="text-xs text-gray-400">📊 Confidence scores (may increase rate limits)</label>
                             </div>
                         </div>
                     </div>
@@ -807,7 +821,6 @@
 
         // FaceTime Video Chat System
         let videoStream = null;
-        let pixelFaceEngine = null;
         let videoAnalysisInterval = null;
         let sessionStartTime = null;
         let framesAnalyzedCount = 0;
@@ -1210,5 +1223,65 @@
 
     <script src="pixel-face-engine.js"></script>
     <script src="realtime-webrtc-client.js"></script>
+
+    <!-- Add JavaScript for slider value updates -->
+    <script>
+        // Update slider value displays
+        document.addEventListener('DOMContentLoaded', function() {
+            // Speech Speed Slider
+            const speechSpeedSlider = document.getElementById('speechSpeed');
+            const speedValue = document.getElementById('speedValue');
+            if (speechSpeedSlider && speedValue) {
+                speechSpeedSlider.addEventListener('input', function() {
+                    speedValue.textContent = this.value + 'x';
+                });
+            }
+
+            // Temperature Slider
+            const temperatureSlider = document.getElementById('temperature');
+            const tempValue = document.getElementById('tempValue');
+            if (temperatureSlider && tempValue) {
+                temperatureSlider.addEventListener('input', function() {
+                    tempValue.textContent = this.value;
+                });
+            }
+
+            // Silence Duration Slider
+            const silenceDurationSlider = document.getElementById('silenceDuration');
+            const silenceValue = document.getElementById('silenceValue');
+            if (silenceDurationSlider && silenceValue) {
+                silenceDurationSlider.addEventListener('input', function() {
+                    silenceValue.textContent = this.value + 'ms';
+                });
+            }
+
+            // Emotion Sensitivity Slider
+            const emotionSensitivitySlider = document.getElementById('emotionSensitivity');
+            const emotionValue = document.getElementById('emotionValue');
+            if (emotionSensitivitySlider && emotionValue) {
+                emotionSensitivitySlider.addEventListener('input', function() {
+                    emotionValue.textContent = this.value;
+                });
+            }
+        });
+    </script>
+
+    <script>
+        // Initialize the application
+        let realtimeClient;
+        let pixelFaceEngine;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎉 Initializing Enhanced AI Assistant...');
+            
+            // Initialize WebRTC client
+            realtimeClient = new RealtimeWebRTCClient();
+            
+            // Initialize pixel face engine
+            pixelFaceEngine = new PixelFaceEngine('aiPixelFace');
+            
+            console.log('✅ Application initialized successfully');
+        });
+    </script>
 </body>
 </html> 
